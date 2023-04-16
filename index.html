@@ -15,7 +15,11 @@
 <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
 <link rel="stylesheet" type="text/css" href="styles/responsive.css">
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-
+<style>
+a{
+  cursor: pointer;
+}
+</style>
 </head>
 
 <body>
@@ -85,9 +89,9 @@
 					<div class="col-lg-4 col-9 order-lg-3 order-2 text-lg-left text-right">
 						<div class="wishlist_cart d-flex flex-row align-items-center justify-content-end">
 							<div class="wishlist d-flex flex-row align-items-center justify-content-end">
-								<div class="wishlist_icon"><img src="images/heart.png" alt=""></div>
+								<div class="wishlist_icon"><a href="#wishlist"><img src="images/heart.png" alt=""></a></div>
 								<div class="wishlist_content">
-									<div class="wishlist_text"><a href="#">Избранные</a></div>
+									<div class="wishlist_text"><a href="#wishlist">Избранные</a></div>
 									<div class="wishlist_count">{{wishlist.length}}</div>
 								</div>
 							</div>
@@ -96,8 +100,10 @@
 							<div class="cart">
 								<div class="cart_container d-flex flex-row align-items-center justify-content-end">
 									<div class="cart_icon">
-										<img src="images/cart.png" alt="">
-										<div class="cart_count"><span>{{cart.length}}</span></div>
+										<a href="cart.html">
+										    <img src="images/cart.png" alt="">
+										    <div class="cart_count"><span>{{cart.length}}</span></div>
+										</a>
 									</div>
 									<div class="cart_content">
 										<div class="cart_text"><a href="cart.html">Корзина</a></div>
@@ -128,7 +134,7 @@
 									<div class="cat_menu_text">КАТЕГОРИИ</div>
 								</div>
 
-								<ul v-if="categories.length > 0" class="cat_menu">
+								<ul v-if="categories.length" class="cat_menu">
 									<li v-for="(category, index) in categories" :key="index" class="hassubs">
 										<a style="color:gray;">{{category.category}}<i class="fas fa-chevron-right"></i></a>
 										<ul>
@@ -142,7 +148,7 @@
 
 							<!-- Main Nav Menu -->
 
-							<div class="main_nav_menu ml-auto">
+							<div class="main_nav_menu ml-auto mr-auto">
 								<ul class="standard_dropdown main_nav_dropdown">
 									<li><a href="index.html">Главная<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="shop.html">Магазин<i class="fas fa-chevron-down"></i></a></li>
@@ -226,14 +232,14 @@
 
 	<!-- Deals of the week -->
 
-	<div class="deals_featured py-5">
+	<div v-if="actions.length" class="deals_featured py-5">
 		<div class="container">
 			<div class="row">
 				<div class="col d-flex flex-lg-row flex-column align-items-center justify-content-start">
 					
 					<!-- Deals -->
 
-					<div v-if="actions.length > 0" v-for="(action, index) in actions" :key="index" class="deals">
+					<div v-for="(item, index) in actions" :key="index" class="deals">
 						<div class="deals_title">Предложения недели</div>
 						<div class="deals_slider_container">
 							
@@ -242,15 +248,15 @@
 								
 								<!-- Deals Item -->
 								<div class="owl-item deals_item">
-									<div class="deals_image"><img src="images/deals.png" alt=""></div>
+									<div @click="onProduct(item)" class="deals_image"><img :src="item.image" alt=""></div>
 									<div class="deals_content">
 										<div class="deals_info_line d-flex flex-row justify-content-start">
-											<div class="deals_item_category"><a href="#">{{action.category}}</a></div>
-											<div class="deals_item_price_a ml-auto">${{action.price}}</div>
+											<div class="deals_item_category"><a href="#">{{item.category}}</a></div>
+											<div class="deals_item_price_a ml-auto">${{item.price}}</div>
 										</div>
 										<div class="deals_info_line d-flex flex-row justify-content-start">
-											<div class="deals_item_name">{{action.title}}</div>
-											<div class="deals_item_price ml-auto">${{parseInt(action.price*((100-action.discount)/100), 10)}}</div>
+											<div class="deals_item_name">{{item.title}}</div>
+											<div class="deals_item_price ml-auto">${{parseInt(item.price*((100-item.discount)/100), 10)}}</div>
 										</div>
 										<div class="available">
 											<div class="available_line d-flex flex-row justify-content-start">
@@ -295,13 +301,13 @@
 					</div>
 					
 					<!-- Рекомендуемые -->
-					<div v-if="featured1.length > 0" class="featured mx-auto">
+					<div v-if="featured1.length" class="featured mx-auto">
 						<div class="tabbed_container">
 							<div class="tabs">
 								<ul class="clearfix">
 									<li class="active">Рекомендуемые</li>
-									<li v-if="featured2.length > 0">Скидки</li>
-									<li v-if="featured3.length > 0">Новинки</li>
+									<li v-if="featured2.length">Скидки</li>
+									<li v-if="featured3.length">Новинки</li>
 								</ul>
 								<div class="tabs_line mb-3"><span></span></div>
 							</div>
@@ -314,16 +320,17 @@
 									<div v-for="(item, index) in featured1" :key="index" class="featured_slider_item">
 										<div class="border_active"></div>
 										<div class="product_item d-flex flex-column align-items-center justify-content-center text-center">	
-											<div class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
+											<div @click="onProduct(item)" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
 											<div class="product_content">
 												<div class="product_price">{{item.price}}</div>
-												<center><div class="product_name"><div><a href="product.html">{{item.title}}</a></div></div></center>
+												<center><div class="product_name"><div><a>{{item.title}}</a></div></div></center>
 												<div class="product_extras">
 													<button v-if="!cart.find(c => c.id === item.id)" @click="addCart(item)" class="product_cart_button">Добавить в корзину</button>
 									                <button v-else style="background-color:green;" class="product_cart_button">Добавлен</button>
 												</div>
 											</div>
-											<div class="product_fav"><i class="fas fa-heart"></i></div>
+											<div v-if="!wishlist.find(w => w.id === item.id)" @click="addWishlist(item)" class="product_fav"><i class="fas fa-heart"></i></div>
+											<div v-else class="product_fav"><i style="color:green;" class="fas fa-heart"></i></div>
 										</div>
 									</div>
 
@@ -333,17 +340,17 @@
 
 							<!-- Продукт Panel -->
 
-							<div v-if="featured2.length > 0" class="product_panel panel">
+							<div v-if="featured2.length" class="product_panel panel">
 								<div class="featured_slider slider">
 
 									<!-- Slider Item -->
 									<div v-for="(item, index) in featured2" :key="index" class="featured_slider_item">
 										<div class="border_active"></div>
 										<div class="product_item discount d-flex flex-column align-items-center justify-content-center text-center">	
-											<div class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
+											<div @click="onProduct(item)" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
 											<div class="product_content">
 												<div class="product_price discount">${{Math.round(item.price*((100-item.discount)/100))}}<span v-if="item.discount > 0">${{item.price}}</span></div>
-												<center><div class="product_name"><div><a href="product.html">{{item.title}}</a></div></div></center>
+												<center><div class="product_name"><div><a>{{item.title}}</a></div></div></center>
 												<div class="product_extras">
 													<button v-if="!cart.find(c => c.id === item.id)" @click="addCart(item)" class="product_cart_button">Добавить в корзину</button>
 									                <button v-else style="background-color:green;" class="product_cart_button">Добавлен</button>
@@ -362,17 +369,17 @@
 
 							<!-- Продукт Panel -->
 
-							<div v-if="featured3.length > 0" class="product_panel panel">
+							<div v-if="featured3.length" class="product_panel panel">
 								<div class="featured_slider slider">
 
 									<!-- Slider Item -->
 									<div v-for="(item, index) in featured3" :key="index" class="featured_slider_item">
 										<div class="border_active"></div>
 										<div class="product_item is_new d-flex flex-column align-items-center justify-content-center text-center">	
-											<div class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
+											<div @click="onProduct(item)" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
 											<div class="product_content">
 												<div class="product_price" :class="{ discount: item.discount > 0}">${{parseInt(item.price*((100-item.discount)/100), 10)}}<span v-if="item.discount > 0">${{item.price}}</span></div>
-												<center><div class="product_name"><div><a href="product.html">{{item.title}}</a></div></div></center>
+												<center><div class="product_name"><div><a>{{item.title}}</a></div></div></center>
 												<div class="product_extras">
 													<button v-if="!cart.find(c => c.id === item.id)" @click="addCart(item)" class="product_cart_button">Добавить в корзину</button>
 									                <button v-else style="background-color:green;" class="product_cart_button">Добавлен</button>
@@ -396,94 +403,138 @@
 			</div>
 		</div>
 	</div>
+	
+	<!-- Hot New Arrivals -->
 
-	<!-- Banner -->
+	<div v-else class="new_arrivals">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="tabbed_container">
+						<div class="tabs clearfix tabs-right">
+							<div class="new_arrivals_title">Hot New Arrivals</div>
+							<ul class="clearfix">
+								<li class="active">Рекомендуемые</li>
+								<li v-if="featured2.length">Скидки</li>
+								<li v-if="featured3.length">Новинки</li>
+							</ul>
+							<div class="tabs_line"><span></span></div>
+						</div>
+						<div class="row">
+							<div class="col-lg-9" style="z-index:1;">
 
-	<div class="banner_2">
-		<div class="banner_2_background" style="background-image:url(images/banner_2_background.jpg)"></div>
-		<div class="banner_2_container">
-			<div class="banner_2_dots"></div>
-			<!-- Banner 2 Slider -->
+								<!-- Product Panel -->
+								<div class="product_panel panel active">
+									<div class="arrivals_slider slider">
 
-			<div class="owl-carousel owl-theme banner_2_slider">
-
-				<!-- Banner 2 Slider Item -->
-				<div class="owl-item">
-					<div class="banner_2_item">
-						<div class="container fill_height">
-							<div class="row fill_height">
-								<div class="col-lg-4 col-md-6 fill_height">
-									<div class="banner_2_content">
-										<div class="banner_2_category">Ноутбуки</div>
-										<div class="banner_2_title">MacBook Air 13</div>
-										<div class="banner_2_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas fermentum laoreet.</div>
-										<div class="rating_r rating_r_4 banner_2_rating"><i></i><i></i><i></i><i></i><i></i></div>
-										<div class="button banner_2_button"><a href="#">Explore</a></div>
+										<!-- Slider Item -->
+										<div v-for="(item, index) in featured1" :key="index" class="arrivals_slider_item">
+											<div class="border_active"></div>
+											<div class="product_item d-flex flex-column align-items-center justify-content-center text-center">
+												<div @click="onProduct(item)" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
+												<div class="product_content">
+													<div class="product_price">{{item.price}}</div>
+													<center><div class="product_name"><div><a>{{item.title}}</a></div></div></center>
+													<div class="product_extras">
+														<button v-if="!cart.find(c => c.id === item.id)" @click="addCart(item)" class="product_cart_button">Добавить в корзину</button>
+														<button v-else style="background-color:green;" class="product_cart_button">Добавлен</button>
+													</div>
+												</div>
+												<div v-if="!wishlist.find(w => w.id === item.id)" @click="addWishlist(item)" class="product_fav"><i class="fas fa-heart"></i></div>
+											    <div v-else class="product_fav"><i style="color:green;" class="fas fa-heart"></i></div>
+											</div>
+										</div>
+										
 									</div>
-									
+									<div class="arrivals_slider_dots_cover"></div>
 								</div>
-								<div class="col-lg-8 col-md-6 fill_height">
-									<div class="banner_2_image_container">
-										<div class="banner_2_image"><img src="images/banner_2_product.png" alt=""></div>
+
+								<!-- Product Panel -->
+								<div v-if="featured2.length" class="product_panel panel">
+									<div class="arrivals_slider slider">
+
+										<!-- Slider Item -->
+										<div v-for="(item, index) in featured2" :key="index" class="arrivals_slider_item">
+											<div class="border_active"></div>
+											<div class="product_item discount d-flex flex-column align-items-center justify-content-center text-center">
+												<div @click="onProduct(item)" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
+												<div class="product_content">
+													<div class="product_price discount">${{Math.round(item.price*((100-item.discount)/100))}}<span v-if="item.discount > 0">${{item.price}}</span></div>
+													<center><div class="product_name"><div><a>{{item.title}}</a></div></div></center>
+													<div class="product_extras">
+														<button v-if="!cart.find(c => c.id === item.id)" @click="addCart(item)" class="product_cart_button">Добавить в корзину</button>
+									                    <button v-else style="background-color:green;" class="product_cart_button">Добавлен</button>
+													</div>
+												</div>
+												<div class="product_fav"><i class="fas fa-heart"></i></div>
+												<ul class="product_marks">
+													<li class="product_mark product_discount">{{item.discount}}%</li>
+												</ul>
+											</div>
+										</div>
+
+									</div>
+									<div class="arrivals_slider_dots_cover"></div>
+								</div>
+
+								<!-- Product Panel -->
+								<div v-if="featured3.length" class="product_panel panel">
+									<div class="arrivals_slider slider">
+
+										<!-- Slider Item -->
+										<div v-for="(item, index) in featured3" :key="index" class="arrivals_slider_item">
+											<div class="border_active"></div>
+											<div class="product_item is_new d-flex flex-column align-items-center justify-content-center text-center">
+												<div @click="onProduct(item)" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
+												<div class="product_content">
+													<div class="product_price" :class="{ discount: item.discount > 0}">${{parseInt(item.price*((100-item.discount)/100), 10)}}<span v-if="item.discount > 0">${{item.price}}</span></div>
+													<center><div class="product_name"><div><a>{{item.title}}</a></div></div></center>
+													<div class="product_extras">
+														<button v-if="!cart.find(c => c.id === item.id)" @click="addCart(item)" class="product_cart_button">Добавить в корзину</button>
+									                    <button v-else style="background-color:green;" class="product_cart_button">Добавлен</button>
+													</div>
+												</div>
+												<div class="product_fav"><i class="fas fa-heart"></i></div>
+												<ul class="product_marks">
+													<li class="product_mark product_new">new</li>
+												</ul>
+											</div>
+										</div>
+
+									</div>
+									<div class="arrivals_slider_dots_cover"></div>
+								</div>
+
+							</div>
+
+							<div v-if="featured1.length" class="col-lg-3">
+								<div class="arrivals_single clearfix">
+									<div class="d-flex flex-column align-items-center justify-content-center">
+										<div @click="onProduct(featured(1))" class="arrivals_single_image"><img :src="featured(1).image" width="200px" alt=""></div>
+										<div class="arrivals_single_content">
+											<div class="arrivals_single_category"><a style="color:grey;">{{featured(1).category}}</a></div>
+											<div class="arrivals_single_name_container clearfix">
+												<div class="arrivals_single_name"><a>{{featured(1).title}}</a></div>
+												<div class="arrivals_single_price text-right">${{featured(1).price}}</div>
+											</div>
+											<div class="rating_r rating_r_4 arrivals_single_rating"><i></i><i></i><i></i><i></i><i></i></div>
+											<div>
+												<button v-if="!cart.find(c => c.id === featured(1).id)" @click="addCart(featured(1))" class="arrivals_single_button">Добавить в корзину</button>
+									            <button v-else style="background-color:green;" class="arrivals_single_button">Добавлен</button>
+											</div>
+										</div>
+										<div v-if="!wishlist.find(w => w.id === featured(1).id)" @click="addWishlist(featured(1))" class="arrivals_single_fav product_fav"><i class="fas fa-heart"></i></div>
+										<div v-else class="arrivals_single_fav product_fav"><i style="color:green;" class="fas fa-heart"></i></div>
 									</div>
 								</div>
 							</div>
-						</div>			
+
+						</div>
+								
 					</div>
 				</div>
-
-				<!-- Banner 2 Slider Item -->
-				<div class="owl-item">
-					<div class="banner_2_item">
-						<div class="container fill_height">
-							<div class="row fill_height">
-								<div class="col-lg-4 col-md-6 fill_height">
-									<div class="banner_2_content">
-										<div class="banner_2_category">Ноутбуки</div>
-										<div class="banner_2_title">MacBook Air 13</div>
-										<div class="banner_2_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas fermentum laoreet.</div>
-										<div class="rating_r rating_r_4 banner_2_rating"><i></i><i></i><i></i><i></i><i></i></div>
-										<div class="button banner_2_button"><a href="#">Explore</a></div>
-									</div>
-									
-								</div>
-								<div class="col-lg-8 col-md-6 fill_height">
-									<div class="banner_2_image_container">
-										<div class="banner_2_image"><img src="images/banner_2_product.png" alt=""></div>
-									</div>
-								</div>
-							</div>
-						</div>			
-					</div>
-				</div>
-
-				<!-- Banner 2 Slider Item -->
-				<div class="owl-item">
-					<div class="banner_2_item">
-						<div class="container fill_height">
-							<div class="row fill_height">
-								<div class="col-lg-4 col-md-6 fill_height">
-									<div class="banner_2_content">
-										<div class="banner_2_category">Ноутбуки</div>
-										<div class="banner_2_title">MacBook Air 13</div>
-										<div class="banner_2_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas fermentum laoreet.</div>
-										<div class="rating_r rating_r_4 banner_2_rating"><i></i><i></i><i></i><i></i><i></i></div>
-										<div class="button banner_2_button"><a href="#">Explore</a></div>
-									</div>
-									
-								</div>
-								<div class="col-lg-8 col-md-6 fill_height">
-									<div class="banner_2_image_container">
-										<div class="banner_2_image"><img src="images/banner_2_product.png" alt=""></div>
-									</div>
-								</div>
-							</div>
-						</div>			
-					</div>
-				</div>
-
 			</div>
-		</div>
+		</div>		
 	</div>
 
 	<!-- Популярные категории -->
@@ -498,7 +549,7 @@
 							<div class="popular_categories_prev popular_categories_nav"><i class="fas fa-angle-left ml-auto"></i></div>
 							<div class="popular_categories_next popular_categories_nav"><i class="fas fa-angle-right ml-auto"></i></div>
 						</div>
-						<div class="popular_categories_link"><a href="#">полный каталог</a></div>
+						<div class="popular_categories_link"><a href="shop.html">полный каталог</a></div>
 					</div>
 				</div>
 				
@@ -1570,7 +1621,7 @@
 
 	<!-- Недавно просмотренные -->
 
-	<div class="viewed">
+	<div v-if="wishlist.length" id="wishlist" class="viewed">
 		<div class="container">
 			<div class="row">
 				<div class="col">
@@ -1589,94 +1640,20 @@
 						<div class="owl-carousel owl-theme viewed_slider">
 							
 							<!-- Недавно просмотренные Item -->
-							<div class="owl-item">
-								<div class="viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
-									<div class="viewed_image"><img src="images/view_1.jpg" alt=""></div>
+							<div v-for="(item, index) in wishlist" :key="index" class="owl-item">
+								<div :class="{is_new: item.isNew && item.discount === 0, discount: item.discount > 0}" class="viewed_item d-flex flex-column align-items-center justify-content-center text-center">
+									<div class="viewed_image"><img :src="item.image" alt=""></div>
 									<div class="viewed_content text-center">
-										<div class="viewed_price">$225<span>$300</span></div>
-										<div class="viewed_name"><a href="#">Beoplay H7</a></div>
+										<div class="viewed_price">${{item.price}}<span>${{Math.round(item.price * (1 + (item.discount/100)))}}</span></div>
+										<div class="viewed_name"><a href="#">{{item.title}}</a></div>
 									</div>
 									<ul class="item_marks">
-										<li class="item_mark item_discount">-25%</li>
+										<li class="item_mark item_discount">{{item.discount}}%</li>
 										<li class="item_mark item_new">new</li>
 									</ul>
 								</div>
 							</div>
-
-							<!-- Недавно просмотренные Item -->
-							<div class="owl-item">
-								<div class="viewed_item d-flex flex-column align-items-center justify-content-center text-center">
-									<div class="viewed_image"><img src="images/view_2.jpg" alt=""></div>
-									<div class="viewed_content text-center">
-										<div class="viewed_price">$379</div>
-										<div class="viewed_name"><a href="#">LUNA Smartphone</a></div>
-									</div>
-									<ul class="item_marks">
-										<li class="item_mark item_discount">-25%</li>
-										<li class="item_mark item_new">new</li>
-									</ul>
-								</div>
-							</div>
-
-							<!-- Недавно просмотренные Item -->
-							<div class="owl-item">
-								<div class="viewed_item d-flex flex-column align-items-center justify-content-center text-center">
-									<div class="viewed_image"><img src="images/view_3.jpg" alt=""></div>
-									<div class="viewed_content text-center">
-										<div class="viewed_price">$225</div>
-										<div class="viewed_name"><a href="#">Samsung J730F...</a></div>
-									</div>
-									<ul class="item_marks">
-										<li class="item_mark item_discount">-25%</li>
-										<li class="item_mark item_new">new</li>
-									</ul>
-								</div>
-							</div>
-
-							<!-- Недавно просмотренные Item -->
-							<div class="owl-item">
-								<div class="viewed_item is_new d-flex flex-column align-items-center justify-content-center text-center">
-									<div class="viewed_image"><img src="images/view_4.jpg" alt=""></div>
-									<div class="viewed_content text-center">
-										<div class="viewed_price">$379</div>
-										<div class="viewed_name"><a href="#">Huawei MediaPad...</a></div>
-									</div>
-									<ul class="item_marks">
-										<li class="item_mark item_discount">-25%</li>
-										<li class="item_mark item_new">new</li>
-									</ul>
-								</div>
-							</div>
-
-							<!-- Недавно просмотренные Item -->
-							<div class="owl-item">
-								<div class="viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
-									<div class="viewed_image"><img src="images/view_5.jpg" alt=""></div>
-									<div class="viewed_content text-center">
-										<div class="viewed_price">$225<span>$300</span></div>
-										<div class="viewed_name"><a href="#">Sony PS4 Slim</a></div>
-									</div>
-									<ul class="item_marks">
-										<li class="item_mark item_discount">-25%</li>
-										<li class="item_mark item_new">new</li>
-									</ul>
-								</div>
-							</div>
-
-							<!-- Недавно просмотренные Item -->
-							<div class="owl-item">
-								<div class="viewed_item d-flex flex-column align-items-center justify-content-center text-center">
-									<div class="viewed_image"><img src="images/view_6.jpg" alt=""></div>
-									<div class="viewed_content text-center">
-										<div class="viewed_price">$375</div>
-										<div class="viewed_name"><a href="#">Speedlink...</a></div>
-									</div>
-									<ul class="item_marks">
-										<li class="item_mark item_discount">-25%</li>
-										<li class="item_mark item_new">new</li>
-									</ul>
-								</div>
-							</div>
+							
 						</div>
 					</div>
 				</div>
@@ -1741,23 +1718,6 @@
 		</div>
 	</div>
     
-	<div class='layout'>
-		<!-- ommited -->
-		<social-chat
-		  icon
-		  :attendants="attendants"
-		>
-		  <p slot="header">Click on one of our attendants below to chat on WhatsApp.</p>
-		  <template v-slot:button>
-			<img
-			  src="https://raw.githubusercontent.com/ktquez/vue-social-chat/master/src/icons/whatsapp.svg"
-			  alt="icon whatsapp"
-			  aria-hidden="true"
-			>      
-		  </template>
-		  <small slot="footer">Opening hours: 8am to 6pm</small>
-		</social-chat>
-    </div>
 	<!-- Footer -->
 	<footer class="footer">
 		<div class="container">
@@ -1864,13 +1824,9 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 <!-- End Vue -->
 <script src="resources/shop-data.js"></script>
 <script src="resources/shop-products.js"></script>
-<script type="module">
-import { SocialChat } from './node_modules/vue-social-chat'
+<script>
 new Vue({
   el: '#index_app',
-  components: {
-    SocialChat
-  },
   data: {
     data: {},
     categories: [],
@@ -1881,19 +1837,6 @@ new Vue({
 	cart: [],
 	wishlist: [],
 	copyright: '',
-	attendants: [
-      {
-        app: 'whatsapp',
-        label: 'Technical support',
-        name: 'Alan Ktquez',
-        number: '5581983383532',
-        avatar: {
-          src: 'https://avatars0.githubusercontent.com/u/8084606?s=460&u=20b6499a416cf7129a18e5c168cf387e159edb1a&v=4',
-          alt: 'Alan Ktquez avatar'
-        }
-      },
-      // ...
-    ]
   },
   mounted() {
     this.data = data;
@@ -1904,6 +1847,10 @@ new Vue({
 	let cart = JSON.parse(localStorage.getItem("shop-cart"));
 	if(cart){
 	  this.cart = cart;
+	}
+	let wishlist = JSON.parse(localStorage.getItem("shop-wishlist"));
+	if(wishlist){
+	  this.wishlist = wishlist;
 	}
 	this.copyright = new Date().getFullYear();
   },
@@ -1917,6 +1864,9 @@ new Vue({
 	}
   },
   methods:{
+    featured(di){
+	  return this.featured1[this.featured1.length - di];
+	},
     addCart(product){
 		let isAdd = false;
 		for(let item of this.cart){
@@ -1928,6 +1878,22 @@ new Vue({
 		  this.cart.push(product);
 		}
 		localStorage.setItem("shop-cart", JSON.stringify(this.cart));
+	},
+	addWishlist(product){
+		let isAdd = false;
+		for(let item of this.wishlist){
+		  if(item.id === product.id){
+			isAdd = true;
+		  }
+		}
+		if(!isAdd){
+		  this.wishlist.push(product);
+		}
+		localStorage.setItem("shop-wishlist", JSON.stringify(this.wishlist));
+	},
+	onProduct(product){
+		localStorage.setItem("shop-product", JSON.stringify(product));
+		window.location.href = "product.html";
 	},
     onSubcategory(category, subcategory){
 		let data = {category:category, subcategory:subcategory};

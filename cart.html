@@ -11,9 +11,11 @@
 <link rel="stylesheet" type="text/css" href="styles/cart_styles.css">
 <link rel="stylesheet" type="text/css" href="styles/cart_responsive.css">
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<style>
 a {
   cursor:pointer;
 }
+</style>
 </head>
 
 <body>
@@ -140,7 +142,7 @@ a {
 
 							<!-- Main Nav Menu -->
 
-							<div class="main_nav_menu ml-auto">
+							<div class="main_nav_menu ml-auto mr-auto">
 								<ul class="standard_dropdown main_nav_dropdown">
 									<li><a href="index.html">Главная<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="shop.html">Магазин<i class="fas fa-chevron-down"></i></a></li>
@@ -211,30 +213,33 @@ a {
 				<div class="col-lg-10 offset-lg-1">
 					<div class="cart_container">
 						<div class="cart_title">Корзина</div>
-						<div class="cart_items">
+						<div v-if="cart.length" class="cart_items">
 							<ul class="cart_list">
-								<li v-for="(product, index) in cart" :key="index" class="cart_item clearfix">
-									<div class="cart_item_image"><img :src="product.image" alt=""></div>
+								<li v-for="(item, index) in cart" :key="index" class="cart_item clearfix">
+									<div class="cart_item_image"><img :src="item.image" alt=""></div>
 									<div class="cart_item_info d-flex flex-md-row flex-column justify-content-between">
 									    <div class="cart_item_name cart_info_col">
 											<div class="cart_item_title">Наименование</div>
-											<div class="cart_item_text">{{product.title}}</div>
+											<div class="cart_item_text">{{item.title}}</div>
 										</div>
 										<div class="cart_item_quantity cart_info_col" style="width:15%;">
 											<div class="cart_item_title">Количество</div>
-											<div class="cart_item_text">{{product.qt}}</div>
+											<div class="cart_item_text">{{item.qt}}</div>
 										</div>
 										<div class="cart_item_price cart_info_col" style="width:15%;">
 											<div class="cart_item_title">Цена</div>
-											<div class="cart_item_text">${{product.price}}</div>
+											<div class="cart_item_text">${{item.price}}</div>
 										</div>
 										<div class="cart_item_total cart_info_col" style="width:15%;">
 											<div class="cart_item_title">Итого</div>
-											<div class="cart_item_text">${{product.price * product.qt}}</div>
+											<div class="cart_item_text">${{item.price * item.qt}}</div>
 										</div>
 									</div>
 								</li>
 							</ul>
+						</div>
+						<div v-else>
+						  <center><h3 style="color:gray;margin:100px;">Корзина пуста</h3></center>
 						</div>
 						
 						<!-- Order Total -->
@@ -246,6 +251,7 @@ a {
 						</div>
 
 						<div class="cart_buttons">
+							<button @click="removeCart" type="button" class="button cart_button_checkout">Очистить корзину</button>
 							<button type="button" class="button cart_button_checkout">Добавить в корзину</button>
 						</div>
 					</div>
@@ -404,19 +410,28 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 		if(cart){
 		  this.cart = cart;
 		}
+		let wishlist = JSON.parse(localStorage.getItem("shop-wishlist"));
+		if(wishlist){
+		  this.wishlist = wishlist;
+		}
 		this.categories = this.getCategories(products);
 		this.copyright = new Date().getFullYear();
 	  },
 	  computed:{
 	    totalAmount(){
-		  let total = 0;
-		  for(let product of this.cart){
-		    total = total + product.price * product.qt;
-		  }
-		  return total;
+		    let total = 0;
+		    for(let product of this.cart){
+		      total = total + product.price * product.qt;
+		    }
+		    return total;
 		}
 	  },
 	  methods:{
+	    removeCart(){
+		    this.cart.length = [];
+		    localStorage.removeItem("shop-cart");
+			window.location.reload();
+		},
 	    onSubcategory(category, subcategory){
 		    let data = {category:category, subcategory:subcategory};
 		    sessionStorage.setItem("shop-data", JSON.stringify(data));
