@@ -10,7 +10,6 @@
 <link href="plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="styles/cart_styles.css">
 <link rel="stylesheet" type="text/css" href="styles/cart_responsive.css">
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <style>
 a {
   cursor:pointer;
@@ -58,23 +57,15 @@ a {
 						<div class="header_search">
 							<div class="header_search_content">
 								<div class="header_search_form_container">
-									<form action="#" class="header_search_form clearfix">
-										<input type="search" required="required" class="header_search_input" placeholder="Поиск товаров...">
+									<form class="header_search_form clearfix">
+										<input v-model="search" type="search" required="required" class="header_search_input" placeholder="Поиск товаров...">
 										<div class="custom_dropdown">
 											<div class="custom_dropdown_list">
 												<span class="custom_dropdown_placeholder clc">Все категории</span>
-												<i class="fas fa-chevron-down"></i>
-												<ul class="custom_list clc">
-													<li><a class="clc" href="#">Все категории</a></li>
-													<li><a class="clc" href="#">Компьютеры</a></li>
-													<li><a class="clc" href="#">Ноутбуки</a></li>
-													<li><a class="clc" href="#">Камеры</a></li>
-													<li><a class="clc" href="#">Комплектующие</a></li>
-													<li><a class="clc" href="#">Смартфоны</a></li>
-												</ul>
+												<ul class="custom_list clc"></ul>
 											</div>
 										</div>
-										<button type="submit" class="header_search_button trans_300" value="Submit"><img src="images/search.png" alt=""></button>
+										<button @click="onSearch()" type="button" class="header_search_button trans_300"><img src="images/search.png" alt=""></button>
 									</form>
 								</div>
 							</div>
@@ -85,9 +76,9 @@ a {
 					<div class="col-lg-4 col-9 order-lg-3 order-2 text-lg-left text-right">
 						<div class="wishlist_cart d-flex flex-row align-items-center justify-content-end">
 							<div class="wishlist d-flex flex-row align-items-center justify-content-end">
-								<div class="wishlist_icon"><img src="images/heart.png" alt=""></div>
+								<a href="shop.html#wishlist"><div class="wishlist_icon"><img src="images/heart.png" alt=""></div></a>
 								<div class="wishlist_content">
-									<div class="wishlist_text"><a href="#">Избранные</a></div>
+									<div class="wishlist_text"><a href="shop.html#wishlist">Избранные</a></div>
 									<div class="wishlist_count">{{wishlist.length}}</div>
 								</div>
 							</div>
@@ -100,7 +91,7 @@ a {
 										<div class="cart_count"><span>{{cart.length}}</span></div>
 									</div>
 									<div class="cart_content">
-										<div class="cart_text"><a href="cart.html">Корзина</a></div>
+										<div class="cart_text"><a>Корзина</a></div>
 										<div class="cart_price">${{totalAmount}}</div>
 									</div>
 								</div>
@@ -390,6 +381,7 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 </div>
 </div>
 <!-- End Vue -->
+<script src="vue.js"></script>
 <script src="resources/shop-data.js"></script>
 <script src="resources/shop-products.js"></script>
 <script>
@@ -398,6 +390,7 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 	  data() {
 		return {
 		    data: {},
+			search: '',
 			categories: [],
 			cart: [],
 			wishlist: [],
@@ -427,6 +420,25 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 		}
 	  },
 	  methods:{
+	    onSearch(){
+			if(this.search){
+				let search = [];
+				for(let product of products){
+				  if(product.category.toLowerCase().includes(this.search.toLowerCase())){
+					search.push(product);
+				  } else if(product.subcategory.toLowerCase().includes(this.search.toLowerCase())){
+					search.push(product);
+				  } else if(product.title.toLowerCase().includes(this.search.toLowerCase())){
+					search.push(product);
+				  } else if(product.description.toLowerCase().includes(this.search.toLowerCase())){
+					search.push(product);
+				  }
+				}
+				sessionStorage.setItem("shop-search", JSON.stringify(search));
+				this.search = '';
+				window.location.href = "shop.html";
+			}
+		},
 	    removeCart(){
 		    this.cart.length = [];
 		    localStorage.removeItem("shop-cart");

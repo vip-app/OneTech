@@ -14,7 +14,6 @@
 <link rel="stylesheet" type="text/css" href="plugins/slick-1.8.0/slick.css">
 <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
 <link rel="stylesheet" type="text/css" href="styles/responsive.css">
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <style>
 a{
   cursor: pointer;
@@ -62,23 +61,15 @@ a{
 						<div class="header_search">
 							<div class="header_search_content">
 								<div class="header_search_form_container">
-									<form action="#" class="header_search_form clearfix">
-										<input type="search" required="required" class="header_search_input" placeholder="Поиск товаров...">
+									<form class="header_search_form clearfix">
+										<input v-model="search" type="search" required="required" class="header_search_input" placeholder="Поиск товаров...">
 										<div class="custom_dropdown">
 											<div class="custom_dropdown_list">
 												<span class="custom_dropdown_placeholder clc">Все категории</span>
-												<i class="fas fa-chevron-down"></i>
-												<ul class="custom_list clc">
-													<li><a class="clc" href="#">Все категории</a></li>
-													<li><a class="clc" href="#">Компьютеры</a></li>
-													<li><a class="clc" href="#">Ноутбуки</a></li>
-													<li><a class="clc" href="#">Камеры</a></li>
-													<li><a class="clc" href="#">Комплектующие</a></li>
-													<li><a class="clc" href="#">Смартфоны</a></li>
-												</ul>
+												<ul class="custom_list clc"></ul>
 											</div>
 										</div>
-										<button type="submit" class="header_search_button trans_300" value="Submit"><img src="images/search.png" alt=""></button>
+										<button @click="onSearch()" type="button" class="header_search_button trans_300"><img src="images/search.png" alt=""></button>
 									</form>
 								</div>
 							</div>
@@ -186,8 +177,9 @@ a{
 						<div class="page_menu_content">
 							
 							<div class="page_menu_search">
-								<form action="#">
-									<input type="search" required="required" class="page_menu_search_input" placeholder="Поиск товаров...">
+								<form>
+									<input v-model="search" type="search" required="required" class="page_menu_search_input" placeholder="Поиск товаров...">
+									<button @click="onSearch()" type="button" class="header_search_button trans_300"><img src="images/search.png" alt=""></button>
 								</form>
 							</div>
 							<ul class="page_menu_nav">
@@ -251,12 +243,12 @@ a{
 									<div @click="onProduct(item)" class="deals_image"><img :src="item.image" alt=""></div>
 									<div class="deals_content">
 										<div class="deals_info_line d-flex flex-row justify-content-start">
-											<div class="deals_item_category"><a href="#">{{item.category}}</a></div>
+											<div class="deals_item_category"><a href="#">{{item.subcategory}}</a></div>
 											<div class="deals_item_price_a ml-auto">${{item.price}}</div>
 										</div>
 										<div class="deals_info_line d-flex flex-row justify-content-start">
 											<div class="deals_item_name">{{item.title}}</div>
-											<div class="deals_item_price ml-auto">${{parseInt(item.price*((100-item.discount)/100), 10)}}</div>
+											<div class="deals_item_price ml-auto">${{Math(item.price*(1 + (item.discount/100)))}}</div>
 										</div>
 										<div class="available">
 											<div class="available_line d-flex flex-row justify-content-start">
@@ -320,17 +312,17 @@ a{
 									<div v-for="(item, index) in featured1" :key="index" class="featured_slider_item">
 										<div class="border_active"></div>
 										<div class="product_item d-flex flex-column align-items-center justify-content-center text-center">	
-											<div @click="onProduct(item)" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
+											<div @click="onProduct(item)" style="cursor:pointer;" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
 											<div class="product_content">
-												<div class="product_price">{{item.price}}</div>
-												<center><div class="product_name"><div><a>{{item.title}}</a></div></div></center>
+												<div class="product_price">${{item.price}}</div>
+												<center><div class="product_name"><div>{{item.title}}</div></div></center>
 												<div class="product_extras">
 													<button v-if="!cart.find(c => c.id === item.id)" @click="addCart(item)" class="product_cart_button">Добавить в корзину</button>
-									                <button v-else style="background-color:green;" class="product_cart_button">Добавлен</button>
+									                <button v-else @click="addCart(item)" style="background-color:green;" class="product_cart_button">Добавлен</button>
 												</div>
 											</div>
-											<div v-if="!wishlist.find(w => w.id === item.id)" @click="addWishlist(item)" class="product_fav"><i class="fas fa-heart"></i></div>
-											<div v-else class="product_fav"><i style="color:green;" class="fas fa-heart"></i></div>
+											<div v-if="!wishlist.find(w => w.id === item.id)" @click.stop="addWishlist(item)" class="product_fav"><i class="fas fa-heart"></i></div>
+											<div v-else @click.stop="addWishlist(item)" class="product_fav"><i style="color:green;" class="fas fa-heart"></i></div>
 										</div>
 									</div>
 
@@ -347,16 +339,17 @@ a{
 									<div v-for="(item, index) in featured2" :key="index" class="featured_slider_item">
 										<div class="border_active"></div>
 										<div class="product_item discount d-flex flex-column align-items-center justify-content-center text-center">	
-											<div @click="onProduct(item)" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
+											<div @click="onProduct(item)" style="cursor:pointer;" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
 											<div class="product_content">
-												<div class="product_price discount">${{Math.round(item.price*((100-item.discount)/100))}}<span v-if="item.discount > 0">${{item.price}}</span></div>
-												<center><div class="product_name"><div><a>{{item.title}}</a></div></div></center>
+												<div class="product_price discount">${{item.price}}<span v-if="item.discount">${{Math.round(item.price * (1 + (item.discount/100)))}}</span></div>
+												<center><div class="product_name"><div>{{item.title}}</div></div></center>
 												<div class="product_extras">
 													<button v-if="!cart.find(c => c.id === item.id)" @click="addCart(item)" class="product_cart_button">Добавить в корзину</button>
-									                <button v-else style="background-color:green;" class="product_cart_button">Добавлен</button>
+									                <button v-else @click="addCart(item)" style="background-color:green;" class="product_cart_button">Добавлен</button>
 												</div>
 											</div>
-											<div class="product_fav"><i class="fas fa-heart"></i></div>
+											<div v-if="!wishlist.find(w => w.id === item.id)" @click.stop="addWishlist(item)" class="product_fav"><i class="fas fa-heart"></i></div>
+								            <div v-else @click.stop="addWishlist(item)" class="product_fav"><i style="color:green;" class="fas fa-heart"></i></div>
 											<ul class="product_marks">
 												<li class="product_mark product_discount">{{item.discount}}%</li>
 											</ul>
@@ -376,16 +369,17 @@ a{
 									<div v-for="(item, index) in featured3" :key="index" class="featured_slider_item">
 										<div class="border_active"></div>
 										<div class="product_item is_new d-flex flex-column align-items-center justify-content-center text-center">	
-											<div @click="onProduct(item)" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
+											<div @click="onProduct(item)" style="cursor:pointer;" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
 											<div class="product_content">
-												<div class="product_price" :class="{ discount: item.discount > 0}">${{parseInt(item.price*((100-item.discount)/100), 10)}}<span v-if="item.discount > 0">${{item.price}}</span></div>
-												<center><div class="product_name"><div><a>{{item.title}}</a></div></div></center>
+												<div class="product_price" :class="{ discount: item.discount}">${{item.price}}<span v-if="item.discount">${{Math.round(item.price * (1 + (item.discount/100)))}}</span></div>
+												<center><div class="product_name"><div>{{item.title}}</div></div></center>
 												<div class="product_extras">
 													<button v-if="!cart.find(c => c.id === item.id)" @click="addCart(item)" class="product_cart_button">Добавить в корзину</button>
-									                <button v-else style="background-color:green;" class="product_cart_button">Добавлен</button>
+									                <button v-else @click="addCart(item)" style="background-color:green;" class="product_cart_button">Добавлен</button>
 												</div>
 											</div>
-											<div class="product_fav"><i class="fas fa-heart"></i></div>
+											<div v-if="!wishlist.find(w => w.id === item.id)" @click.stop="addWishlist(item)" class="product_fav"><i class="fas fa-heart"></i></div>
+								            <div v-else @click.stop="addWishlist(item)" class="product_fav"><i style="color:green;" class="fas fa-heart"></i></div>
 											<ul class="product_marks">
 												<li class="product_mark product_new">new</li>
 											</ul>
@@ -406,7 +400,7 @@ a{
 	
 	<!-- Hot New Arrivals -->
 
-	<div v-else class="new_arrivals">
+	<div v-else style="padding-bottom:0px;" class="new_arrivals">
 		<div class="container">
 			<div class="row">
 				<div class="col">
@@ -431,17 +425,17 @@ a{
 										<div v-for="(item, index) in featured1" :key="index" class="arrivals_slider_item">
 											<div class="border_active"></div>
 											<div class="product_item d-flex flex-column align-items-center justify-content-center text-center">
-												<div @click="onProduct(item)" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
+												<div @click="onProduct(item)" style="cursor:pointer;" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
 												<div class="product_content">
-													<div class="product_price">{{item.price}}</div>
-													<center><div class="product_name"><div><a>{{item.title}}</a></div></div></center>
+													<div class="product_price">${{item.price}}</div>
+													<center><div class="product_name"><div>{{item.title}}</div></div></center>
 													<div class="product_extras">
 														<button v-if="!cart.find(c => c.id === item.id)" @click="addCart(item)" class="product_cart_button">Добавить в корзину</button>
-														<button v-else style="background-color:green;" class="product_cart_button">Добавлен</button>
+														<button v-else @click="addCart(item)" style="background-color:green;" class="product_cart_button">Добавлен</button>
 													</div>
 												</div>
-												<div v-if="!wishlist.find(w => w.id === item.id)" @click="addWishlist(item)" class="product_fav"><i class="fas fa-heart"></i></div>
-											    <div v-else class="product_fav"><i style="color:green;" class="fas fa-heart"></i></div>
+												<div v-if="!wishlist.find(w => w.id === item.id)" @click.stop="addWishlist(item)" class="product_fav"><i class="fas fa-heart"></i></div>
+											    <div v-else @click.stop="addWishlist(item)" class="product_fav"><i style="color:green;" class="fas fa-heart"></i></div>
 											</div>
 										</div>
 										
@@ -457,16 +451,17 @@ a{
 										<div v-for="(item, index) in featured2" :key="index" class="arrivals_slider_item">
 											<div class="border_active"></div>
 											<div class="product_item discount d-flex flex-column align-items-center justify-content-center text-center">
-												<div @click="onProduct(item)" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
+												<div @click="onProduct(item)" style="cursor:pointer;" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
 												<div class="product_content">
-													<div class="product_price discount">${{Math.round(item.price*((100-item.discount)/100))}}<span v-if="item.discount > 0">${{item.price}}</span></div>
-													<center><div class="product_name"><div><a>{{item.title}}</a></div></div></center>
+													<div class="product_price discount">${{item.price}}<span v-if="item.discount">${{Math.round(item.price * (1 + (item.discount/100)))}}</span></div>
+													<center><div class="product_name"><div>{{item.title}}</div></div></center>
 													<div class="product_extras">
 														<button v-if="!cart.find(c => c.id === item.id)" @click="addCart(item)" class="product_cart_button">Добавить в корзину</button>
-									                    <button v-else style="background-color:green;" class="product_cart_button">Добавлен</button>
+									                    <button v-else @click="addCart(item)" style="background-color:green;" class="product_cart_button">Добавлен</button>
 													</div>
 												</div>
-												<div class="product_fav"><i class="fas fa-heart"></i></div>
+												<div v-if="!wishlist.find(w => w.id === item.id)" @click.stop="addWishlist(item)" class="product_fav"><i class="fas fa-heart"></i></div>
+								                <div v-else @click.stop="addWishlist(item)" class="product_fav"><i style="color:green;" class="fas fa-heart"></i></div>
 												<ul class="product_marks">
 													<li class="product_mark product_discount">{{item.discount}}%</li>
 												</ul>
@@ -485,16 +480,17 @@ a{
 										<div v-for="(item, index) in featured3" :key="index" class="arrivals_slider_item">
 											<div class="border_active"></div>
 											<div class="product_item is_new d-flex flex-column align-items-center justify-content-center text-center">
-												<div @click="onProduct(item)" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
+												<div @click="onProduct(item)" style="cursor:pointer;" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
 												<div class="product_content">
-													<div class="product_price" :class="{ discount: item.discount > 0}">${{parseInt(item.price*((100-item.discount)/100), 10)}}<span v-if="item.discount > 0">${{item.price}}</span></div>
-													<center><div class="product_name"><div><a>{{item.title}}</a></div></div></center>
+													<div class="product_price" :class="{ discount: item.discount}">${{item.price}}<span v-if="item.discount">${{Math.round(item.price * (1 + (item.discount/100)))}}</span></div>
+													<center><div class="product_name"><div>{{item.title}}</div></div></center>
 													<div class="product_extras">
 														<button v-if="!cart.find(c => c.id === item.id)" @click="addCart(item)" class="product_cart_button">Добавить в корзину</button>
-									                    <button v-else style="background-color:green;" class="product_cart_button">Добавлен</button>
+									                    <button v-else @click="addCart(item)" style="background-color:green;" class="product_cart_button">Добавлен</button>
 													</div>
 												</div>
-												<div class="product_fav"><i class="fas fa-heart"></i></div>
+												<div v-if="!wishlist.find(w => w.id === item.id)" @click.stop="addWishlist(item)" class="product_fav"><i class="fas fa-heart"></i></div>
+								                <div v-else @click.stop="addWishlist(item)" class="product_fav"><i style="color:green;" class="fas fa-heart"></i></div>
 												<ul class="product_marks">
 													<li class="product_mark product_new">new</li>
 												</ul>
@@ -510,21 +506,21 @@ a{
 							<div v-if="featured1.length" class="col-lg-3">
 								<div class="arrivals_single clearfix">
 									<div class="d-flex flex-column align-items-center justify-content-center">
-										<div @click="onProduct(featured(1))" class="arrivals_single_image"><img :src="featured(1).image" width="200px" alt=""></div>
+										<div @click="onProduct(featured(1))" style="cursor:pointer;" class="arrivals_single_image"><img :src="featured(1).image" width="200px" alt=""></div>
 										<div class="arrivals_single_content">
-											<div class="arrivals_single_category"><a style="color:grey;">{{featured(1).category}}</a></div>
+											<div class="arrivals_single_category"><a style="color:grey;">{{featured(1).subcategory}}</a></div>
 											<div class="arrivals_single_name_container clearfix">
-												<div class="arrivals_single_name"><a>{{featured(1).title}}</a></div>
+												<div class="arrivals_single_name">{{featured(1).title}}</div>
 												<div class="arrivals_single_price text-right">${{featured(1).price}}</div>
 											</div>
 											<div class="rating_r rating_r_4 arrivals_single_rating"><i></i><i></i><i></i><i></i><i></i></div>
 											<div>
 												<button v-if="!cart.find(c => c.id === featured(1).id)" @click="addCart(featured(1))" class="arrivals_single_button">Добавить в корзину</button>
-									            <button v-else style="background-color:green;" class="arrivals_single_button">Добавлен</button>
+									            <button v-else @click="addCart(featured(1))" style="background-color:green;" class="arrivals_single_button">Добавлен</button>
 											</div>
 										</div>
-										<div v-if="!wishlist.find(w => w.id === featured(1).id)" @click="addWishlist(featured(1))" class="arrivals_single_fav product_fav"><i class="fas fa-heart"></i></div>
-										<div v-else class="arrivals_single_fav product_fav"><i style="color:green;" class="fas fa-heart"></i></div>
+										<div v-if="!wishlist.find(w => w.id === featured(1).id)" @click.stop="addWishlist(featured(1))" class="arrivals_single_fav product_fav"><i class="fas fa-heart"></i></div>
+										<div v-else @click.stop="addWishlist(featured(1))" class="arrivals_single_fav product_fav"><i style="color:green;" class="fas fa-heart"></i></div>
 									</div>
 								</div>
 							</div>
@@ -539,7 +535,7 @@ a{
 
 	<!-- Популярные категории -->
 
-	<div class="popular_categories">
+	<div style="padding-top:0px;" class="popular_categories">
 		<div class="container pb-5">
 			<div class="row">
 				<div class="col-lg-3">
@@ -608,17 +604,15 @@ a{
 
 	<!-- Best Sellers -->
 
-	<div class="best_sellers">
+	<div v-if="viewed.length" class="best_sellers">
 		<div class="container">
 			<div class="row">
 				<div class="col">
 					<div class="tabbed_container">
-						<div class="tabs clearfix tabs-right">
+						<div style="padding-top:0px;" class="tabs clearfix tabs-right">
 							<div class="new_arrivals_title">Лучшие бестселлеры</div>
 							<ul class="clearfix">
-								<li class="active">Top 20</li>
-								<li>Аудио видео</li>
-								<li>Ноутбуки и компьютеры</li>
+								<li class="active"></li>
 							</ul>
 							<div class="tabs_line"><span></span></div>
 						</div>
@@ -630,673 +624,26 @@ a{
 							<div class="bestsellers_slider slider">
 
 								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
+								<div v-for="(item, index) in viewed" :key="index" :class="{is_new: item.isNew && !item.discount, discount: item.discount}" class="bestsellers_item">
 									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_1.png" alt=""></div>
+										<div @click="onProduct(item)" style="cursor:pointer;" class="bestsellers_image"><img :src="item.image" alt=""></div>
 										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
+											<div class="bestsellers_category"><a>{{item.subcategory}}</a></div>
+											<div class="bestsellers_name"><a @click="onProduct(item)">{{item.title}}</a></div>
 											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
+											<div class="bestsellers_price" :class="{ discount: item.discount}">${{item.price}}<span v-if="item.discount">${{Math.round(item.price * (1 + (item.discount/100)))}}</span></div>
 										</div>
 									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
 									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_2.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Samsung J730F...</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_3.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Nomi Black White</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_4.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Samsung Charm Gold</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_5.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Beoplay H7</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_6.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Huawei MediaPad T3</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_1.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_2.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_3.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_4.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_5.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_6.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
+										<li class="bestsellers_mark bestsellers_discount">{{item.discount}}%</li>
 										<li class="bestsellers_mark bestsellers_new">new</li>
 									</ul>
 								</div>
 
 							</div>
+							
 						</div>
-
-						<div class="bestsellers_panel panel">
-
-							<!-- Best Sellers Slider -->
-
-							<div class="bestsellers_slider slider">
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_1.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_2.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_3.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_4.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_5.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_6.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_1.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_2.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_3.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_4.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_5.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_6.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-							</div>
-						</div>
-
-						<div class="bestsellers_panel panel">
-
-							<!-- Best Sellers Slider -->
-
-							<div class="bestsellers_slider slider">
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_1.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_2.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_3.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_4.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_5.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_6.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_1.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_2.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_3.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_4.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_5.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><img src="images/best_6.png" alt=""></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a href="#">Headphones</a></div>
-											<div class="bestsellers_name"><a href="product.html">Xiaomi Redmi Note 4</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="bestsellers_price discount">$225<span>$300</span></div>
-										</div>
-									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										<li class="bestsellers_mark bestsellers_discount">-25%</li>
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-
-							</div>
-						</div>
+						
 					</div>
 						
 				</div>
@@ -1306,47 +653,22 @@ a{
 
 	<!-- Adverts -->
 
-	<div class="adverts">
+	<div v-if="topdiscounts.length" class="adverts">
 		<div class="container">
 			<div class="row">
 
-				<div class="col-lg-4 advert_col">
-					
-					<!-- Advert Item -->
-
-					<div class="advert d-flex flex-row align-items-center justify-content-start">
-						<div class="advert_content">
-							<div class="advert_title"><a href="#">Тренды 2021</a></div>
-							<div class="advert_text">Lorem ipsum dolor sit amet, consectetur adipiscing Donec et.</div>
-						</div>
-						<div class="ml-auto"><div class="advert_image"><img src="images/adv_1.png" alt=""></div></div>
-					</div>
-				</div>
-
-				<div class="col-lg-4 advert_col">
+				<div v-for="(item, index) in topdiscounts" :key="index" class="col-lg-4 advert_col">
 					
 					<!-- Advert Item -->
 
 					<div class="advert d-flex flex-row align-items-center justify-content-start">
 						<div class="advert_content">
 							<div class="advert_subtitle">Тренды 2021</div>
-							<div class="advert_title_2"><a href="#">Распродажа -45%</a></div>
-							<div class="advert_text">Lorem ipsum dolor sit amet, consectetur.</div>
+							<div @click="onProduct(item)" style="color: #0e8ce4;" class="advert_title_2"><a>{{item.title}}</a></div>
+							<br>
+							<div style="color:red;" class="advert_title_2"><a>-{{item.discount}}%</a></div>
 						</div>
-						<div class="ml-auto"><div class="advert_image"><img src="images/adv_2.png" alt=""></div></div>
-					</div>
-				</div>
-
-				<div class="col-lg-4 advert_col">
-					
-					<!-- Advert Item -->
-
-					<div class="advert d-flex flex-row align-items-center justify-content-start">
-						<div class="advert_content">
-							<div class="advert_title"><a href="#">Тренды 2021</a></div>
-							<div class="advert_text">Lorem ipsum dolor sit amet, consectetur.</div>
-						</div>
-						<div class="ml-auto"><div class="advert_image"><img src="images/adv_3.png" alt=""></div></div>
+						<div class="ml-auto"><div class="advert_image"><img :src="item.image" @click="onProduct(item)" style="cursor:pointer;width:150px;" alt=""></div></div>
 					</div>
 				</div>
 
@@ -1365,7 +687,7 @@ a{
 				<!-- Trends Content -->
 				<div class="col-lg-3">
 					<div class="trends_container">
-						<h2 class="trends_title">Тренды 2021</h2>
+						<h2 class="trends_title">Тренды {{copyright}}</h2>
 						<div class="trends_text"><p>Lorem ipsum dolor sit amet, consectetur adipiscing Donec et.</p></div>
 						<div class="trends_slider_nav">
 							<div class="trends_prev trends_nav"><i class="fas fa-angle-left ml-auto"></i></div>
@@ -1383,116 +705,22 @@ a{
 						<div class="owl-carousel owl-theme trends_slider">
 
 							<!-- Trends Slider Item -->
-							<div class="owl-item">
-								<div class="trends_item is_new">
-									<div class="trends_image d-flex flex-column align-items-center justify-content-center"><img src="images/trends_1.jpg" alt=""></div>
+							<div v-for="(item, index) in topprices" :key="index" class="owl-item">
+								<div :class="{is_new:item.isNew && !item.discount, discount:item.discount}" class="trends_item">
+									<div class="trends_image d-flex flex-column align-items-center justify-content-center"><a @click="onProduct(item)"><img :src="item.image" alt=""></a></div>
 									<div class="trends_content">
-										<div class="trends_category"><a href="#">Смартфоны</a></div>
+										<div style="color:gray" class="trends_category">{{item.subcategory}}</div>
 										<div class="trends_info clearfix">
-											<div class="trends_name"><a href="product.html">Jump White</a></div>
-											<div class="trends_price">$379</div>
+											<div class="trends_name"><a @click="onProduct(item)">{{item.title}}</a></div>
+											<div :style="{color:item.discount ? 'red' : ''}" class="trends_price">${{item.price}}</div>
 										</div>
 									</div>
 									<ul class="trends_marks">
-										<li class="trends_mark trends_discount">-25%</li>
+										<li class="trends_mark trends_discount">{{item.discount}}%</li>
 										<li class="trends_mark trends_new">new</li>
 									</ul>
-									<div class="trends_fav"><i class="fas fa-heart"></i></div>
-								</div>
-							</div>
-
-							<!-- Trends Slider Item -->
-							<div class="owl-item">
-								<div class="trends_item">
-									<div class="trends_image d-flex flex-column align-items-center justify-content-center"><img src="images/trends_2.jpg" alt=""></div>
-									<div class="trends_content">
-										<div class="trends_category"><a href="#">Смартфоны</a></div>
-										<div class="trends_info clearfix">
-											<div class="trends_name"><a href="product.html">Samsung Charm...</a></div>
-											<div class="trends_price">$379</div>
-										</div>
-									</div>
-									<ul class="trends_marks">
-										<li class="trends_mark trends_discount">-25%</li>
-										<li class="trends_mark trends_new">new</li>
-									</ul>
-									<div class="trends_fav"><i class="fas fa-heart"></i></div>
-								</div>
-							</div>
-
-							<!-- Trends Slider Item -->
-							<div class="owl-item">
-								<div class="trends_item is_new">
-									<div class="trends_image d-flex flex-column align-items-center justify-content-center"><img src="images/trends_3.jpg" alt=""></div>
-									<div class="trends_content">
-										<div class="trends_category"><a href="#">Смартфоны</a></div>
-										<div class="trends_info clearfix">
-											<div class="trends_name"><a href="product.html">DJI Phantom 3...</a></div>
-											<div class="trends_price">$379</div>
-										</div>
-									</div>
-									<ul class="trends_marks">
-										<li class="trends_mark trends_discount">-25%</li>
-										<li class="trends_mark trends_new">new</li>
-									</ul>
-									<div class="trends_fav"><i class="fas fa-heart"></i></div>
-								</div>
-							</div>
-
-							<!-- Trends Slider Item -->
-							<div class="owl-item">
-								<div class="trends_item is_new">
-									<div class="trends_image d-flex flex-column align-items-center justify-content-center"><img src="images/trends_1.jpg" alt=""></div>
-									<div class="trends_content">
-										<div class="trends_category"><a href="#">Смартфоны</a></div>
-										<div class="trends_info clearfix">
-											<div class="trends_name"><a href="product.html">Jump White</a></div>
-											<div class="trends_price">$379</div>
-										</div>
-									</div>
-									<ul class="trends_marks">
-										<li class="trends_mark trends_discount">-25%</li>
-										<li class="trends_mark trends_new">new</li>
-									</ul>
-									<div class="trends_fav"><i class="fas fa-heart"></i></div>
-								</div>
-							</div>
-
-							<!-- Trends Slider Item -->
-							<div class="owl-item">
-								<div class="trends_item">
-									<div class="trends_image d-flex flex-column align-items-center justify-content-center"><img src="images/trends_2.jpg" alt=""></div>
-									<div class="trends_content">
-										<div class="trends_category"><a href="#">Смартфоны</a></div>
-										<div class="trends_info clearfix">
-											<div class="trends_name"><a href="product.html">Jump White</a></div>
-											<div class="trends_price">$379</div>
-										</div>
-									</div>
-									<ul class="trends_marks">
-										<li class="trends_mark trends_discount">-25%</li>
-										<li class="trends_mark trends_new">new</li>
-									</ul>
-									<div class="trends_fav"><i class="fas fa-heart"></i></div>
-								</div>
-							</div>
-
-							<!-- Trends Slider Item -->
-							<div class="owl-item">
-								<div class="trends_item is_new">
-									<div class="trends_image d-flex flex-column align-items-center justify-content-center"><img src="images/trends_3.jpg" alt=""></div>
-									<div class="trends_content">
-										<div class="trends_category"><a href="#">Смартфоны</a></div>
-										<div class="trends_info clearfix">
-											<div class="trends_name"><a href="product.html">Jump White</a></div>
-											<div class="trends_price">$379</div>
-										</div>
-									</div>
-									<ul class="trends_marks">
-										<li class="trends_mark trends_discount">-25%</li>
-										<li class="trends_mark trends_new">new</li>
-									</ul>
-									<div class="trends_fav"><i class="fas fa-heart"></i></div>
+									<div v-if="!wishlist.find(w => w.id === item.id)" @click.stop="addWishlist(item)" class="trends_fav"><i class="fas fa-heart"></i></div>
+								    <div v-else @click.stop="addWishlist(item)" class="trends_fav"><i style="color:green;" class="fas fa-heart"></i></div>
 								</div>
 							</div>
 
@@ -1513,7 +741,7 @@ a{
 					
 					<div class="reviews_title_container">
 						<h3 class="reviews_title">Последние обзоры</h3>
-						<div class="reviews_all ml-auto"><a href="#">посмотреть все <span>отзывы</span></a></div>
+						<div class="reviews_all ml-auto"><a href="shop.html">посмотреть все</a></div>
 					</div>
 
 					<div class="reviews_slider_container">
@@ -1527,81 +755,6 @@ a{
 									<div><div class="review_image"><img src="images/review_1.jpg" alt=""></div></div>
 									<div class="review_content">
 										<div class="review_name">Roberto Sanchez</div>
-										<div class="review_rating_container">
-											<div class="rating_r rating_r_4 review_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="review_time">2 дня назад</div>
-										</div>
-										<div class="review_text"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas fermentum laoreet.</p></div>
-									</div>
-								</div>
-							</div>
-
-							<!-- Reviews Slider Item -->
-							<div class="owl-item">
-								<div class="review d-flex flex-row align-items-start justify-content-start">
-									<div><div class="review_image"><img src="images/review_2.jpg" alt=""></div></div>
-									<div class="review_content">
-										<div class="review_name">Brandon Flowers</div>
-										<div class="review_rating_container">
-											<div class="rating_r rating_r_4 review_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="review_time">2 дня назад</div>
-										</div>
-										<div class="review_text"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas fermentum laoreet.</p></div>
-									</div>
-								</div>
-							</div>
-
-							<!-- Reviews Slider Item -->
-							<div class="owl-item">
-								<div class="review d-flex flex-row align-items-start justify-content-start">
-									<div><div class="review_image"><img src="images/review_3.jpg" alt=""></div></div>
-									<div class="review_content">
-										<div class="review_name">Emilia Clarke</div>
-										<div class="review_rating_container">
-											<div class="rating_r rating_r_4 review_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="review_time">2 дня назад</div>
-										</div>
-										<div class="review_text"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas fermentum laoreet.</p></div>
-									</div>
-								</div>
-							</div>
-
-							<!-- Reviews Slider Item -->
-							<div class="owl-item">
-								<div class="review d-flex flex-row align-items-start justify-content-start">
-									<div><div class="review_image"><img src="images/review_1.jpg" alt=""></div></div>
-									<div class="review_content">
-										<div class="review_name">Roberto Sanchez</div>
-										<div class="review_rating_container">
-											<div class="rating_r rating_r_4 review_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="review_time">2 дня назад</div>
-										</div>
-										<div class="review_text"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas fermentum laoreet.</p></div>
-									</div>
-								</div>
-							</div>
-
-							<!-- Reviews Slider Item -->
-							<div class="owl-item">
-								<div class="review d-flex flex-row align-items-start justify-content-start">
-									<div><div class="review_image"><img src="images/review_2.jpg" alt=""></div></div>
-									<div class="review_content">
-										<div class="review_name">Brandon Flowers</div>
-										<div class="review_rating_container">
-											<div class="rating_r rating_r_4 review_rating"><i></i><i></i><i></i><i></i><i></i></div>
-											<div class="review_time">2 дня назад</div>
-										</div>
-										<div class="review_text"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas fermentum laoreet.</p></div>
-									</div>
-								</div>
-							</div>
-
-							<!-- Reviews Slider Item -->
-							<div class="owl-item">
-								<div class="review d-flex flex-row align-items-start justify-content-start">
-									<div><div class="review_image"><img src="images/review_3.jpg" alt=""></div></div>
-									<div class="review_content">
-										<div class="review_name">Emilia Clarke</div>
 										<div class="review_rating_container">
 											<div class="rating_r rating_r_4 review_rating"><i></i><i></i><i></i><i></i><i></i></div>
 											<div class="review_time">2 дня назад</div>
@@ -1626,7 +779,7 @@ a{
 			<div class="row">
 				<div class="col">
 					<div class="viewed_title_container">
-						<h3 class="viewed_title">Недавно просмотренные</h3>
+						<h3 class="viewed_title">Понравившиеся</h3>
 						<div class="viewed_nav_container">
 							<div class="viewed_nav viewed_prev"><i class="fas fa-chevron-left"></i></div>
 							<div class="viewed_nav viewed_next"><i class="fas fa-chevron-right"></i></div>
@@ -1641,11 +794,11 @@ a{
 							
 							<!-- Недавно просмотренные Item -->
 							<div v-for="(item, index) in wishlist" :key="index" class="owl-item">
-								<div :class="{is_new: item.isNew && item.discount === 0, discount: item.discount > 0}" class="viewed_item d-flex flex-column align-items-center justify-content-center text-center">
-									<div class="viewed_image"><img :src="item.image" alt=""></div>
+								<div :class="{is_new: item.isNew && !item.discount, discount: item.discount}" class="viewed_item d-flex flex-column align-items-center justify-content-center text-center">
+									<div @click="onProduct(item)" style="cursor:pointer;" class="viewed_image"><img :src="item.image" alt=""></div>
 									<div class="viewed_content text-center">
-										<div class="viewed_price">${{item.price}}<span>${{Math.round(item.price * (1 + (item.discount/100)))}}</span></div>
-										<div class="viewed_name"><a href="#">{{item.title}}</a></div>
+										<div class="viewed_price">${{item.price}}<span v-if="item.discount">${{Math.round(item.price * (1 + (item.discount/100)))}}</span></div>
+										<div class="viewed_name">{{item.title}}</div>
 									</div>
 									<ul class="item_marks">
 										<li class="item_mark item_discount">{{item.discount}}%</li>
@@ -1822,6 +975,7 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 </div>
 </div>
 <!-- End Vue -->
+<script src="vue.js"></script>
 <script src="resources/shop-data.js"></script>
 <script src="resources/shop-products.js"></script>
 <script>
@@ -1829,6 +983,7 @@ new Vue({
   el: '#index_app',
   data: {
     data: {},
+	search: '',
     categories: [],
 	actions: [],
     featured1: [],
@@ -1836,6 +991,9 @@ new Vue({
 	featured3: [],
 	cart: [],
 	wishlist: [],
+	viewed: [],
+	topdiscounts: [],
+	topprices: [],
 	copyright: '',
   },
   mounted() {
@@ -1844,6 +1002,8 @@ new Vue({
     this.featured1 = products.filter(product => product.discount == 0 && !product.isNew);
 	this.featured2 = products.filter(product => product.discount > 0);
 	this.featured3 = products.filter(product => product.isNew);
+	this.topdiscounts = this.topDiscounts();
+	this.topprices = this.topPrices();
 	let cart = JSON.parse(localStorage.getItem("shop-cart"));
 	if(cart){
 	  this.cart = cart;
@@ -1851,6 +1011,10 @@ new Vue({
 	let wishlist = JSON.parse(localStorage.getItem("shop-wishlist"));
 	if(wishlist){
 	  this.wishlist = wishlist;
+	}
+	let viewed = JSON.parse(localStorage.getItem("shop-viewed"));
+	if(viewed){
+	  this.viewed = viewed;
 	}
 	this.copyright = new Date().getFullYear();
   },
@@ -1864,14 +1028,49 @@ new Vue({
 	}
   },
   methods:{
+    onSearch(){
+	    if(this.search){
+			let search = [];
+			for(let product of products){
+			  if(product.category.toLowerCase().includes(this.search.toLowerCase())){
+				search.push(product);
+			  } else if(product.subcategory.toLowerCase().includes(this.search.toLowerCase())){
+				search.push(product);
+			  } else if(product.title.toLowerCase().includes(this.search.toLowerCase())){
+				search.push(product);
+			  } else if(product.description.toLowerCase().includes(this.search.toLowerCase())){
+				search.push(product);
+			  }
+			}
+			sessionStorage.setItem("shop-search", JSON.stringify(search));
+			this.search = '';
+			window.location.href = "shop.html";
+		}
+	},
+    topDiscounts(){
+	    let discounts = this.featured2;
+	    discounts.sort(function(a, b){
+		  return b.discount - a.discount;
+		});
+		return discounts.slice(0, 3);
+	},
+	topPrices(){
+	    let prices = products;
+	    prices.sort(function(a, b){
+		  return b.price - a.price;
+		});
+		return prices.slice(0, 9);
+	},
     featured(di){
 	  return this.featured1[this.featured1.length - di];
 	},
     addCart(product){
 		let isAdd = false;
-		for(let item of this.cart){
-		  if(item.id === product.id){
+		for(let i = 0; i < this.cart.length; i++){
+		  if(this.cart[i].id === product.id){
+		    this.cart.splice(i, 1);
 			isAdd = true;
+			break;
 		  }
 		}
 		if(!isAdd){
@@ -1881,18 +1080,39 @@ new Vue({
 	},
 	addWishlist(product){
 		let isAdd = false;
-		for(let item of this.wishlist){
-		  if(item.id === product.id){
+		for(let i = 0; i < this.wishlist.length; i++){
+		  if(this.wishlist[i].id === product.id){
+		    this.wishlist.splice(i, 1);
 			isAdd = true;
+			break;
 		  }
 		}
 		if(!isAdd){
-		  this.wishlist.push(product);
+		  this.wishlist.unshift(product);
 		}
 		localStorage.setItem("shop-wishlist", JSON.stringify(this.wishlist));
 	},
+	addViewed(product){
+		let isAdd = false;
+		for(let item of this.viewed){
+		  if(item.id === product.id){
+			isAdd = true;
+			break;
+		  }
+		}
+		if(!isAdd){
+		  if(this.viewed.length >= 24){
+		    this.viewed.pop();
+		    this.viewed.unshift(product);
+		  } else {
+		    this.viewed.unshift(product);
+		  }
+		}
+		localStorage.setItem("shop-viewed", JSON.stringify(this.viewed));
+	},
 	onProduct(product){
 		localStorage.setItem("shop-product", JSON.stringify(product));
+		this.addViewed(product);
 		window.location.href = "product.html";
 	},
     onSubcategory(category, subcategory){

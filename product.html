@@ -13,7 +13,6 @@
 <link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
 <link rel="stylesheet" type="text/css" href="styles/product_styles.css">
 <link rel="stylesheet" type="text/css" href="styles/product_responsive.css">
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <style>
 a {
   cursor:pointer;
@@ -61,23 +60,15 @@ a {
 						<div class="header_search">
 							<div class="header_search_content">
 								<div class="header_search_form_container">
-									<form action="#" class="header_search_form clearfix">
-										<input type="search" required="required" class="header_search_input" placeholder="Поиск товаров...">
+									<form class="header_search_form clearfix">
+										<input v-model="search" type="search" required="required" class="header_search_input" placeholder="Поиск товаров...">
 										<div class="custom_dropdown">
 											<div class="custom_dropdown_list">
 												<span class="custom_dropdown_placeholder clc">Все категории</span>
-												<i class="fas fa-chevron-down"></i>
-												<ul class="custom_list clc">
-													<li><a class="clc" href="#">Все категории</a></li>
-													<li><a class="clc" href="#">Компьютеры</a></li>
-													<li><a class="clc" href="#">Ноутбуки</a></li>
-													<li><a class="clc" href="#">Камеры</a></li>
-													<li><a class="clc" href="#">Комплектующие</a></li>
-													<li><a class="clc" href="#">Смартфоны</a></li>
-												</ul>
+												<ul class="custom_list clc"></ul>
 											</div>
 										</div>
-										<button type="submit" class="header_search_button trans_300" value="Submit"><img src="images/search.png" alt=""></button>
+										<button @click="onSearch()" type="button" class="header_search_button trans_300"><img src="images/search.png" alt=""></button>
 									</form>
 								</div>
 							</div>
@@ -133,7 +124,7 @@ a {
 									<div class="cat_menu_text">КАТЕГОРИИ</div>
 								</div>
 
-								<ul v-if="categories.length > 0" class="cat_menu">
+								<ul v-if="categories.length" class="cat_menu">
 									<li v-for="(category, index) in categories" :key="index" class="hassubs">
 										<a style="color:gray;">{{category.category}}<i class="fas fa-chevron-right"></i></a>
 										<ul>
@@ -185,8 +176,9 @@ a {
 						<div class="page_menu_content">
 							
 							<div class="page_menu_search">
-								<form action="#">
-									<input type="search" required="required" class="page_menu_search_input" placeholder="Поиск товаров...">
+								<form>
+									<input v-model="search" type="search" required="required" class="page_menu_search_input" placeholder="Поиск товаров...">
+									<button @click="onSearch()" type="button" class="header_search_button trans_300"><img src="images/search.png" alt=""></button>
 								</form>
 							</div>
 							<ul class="page_menu_nav">
@@ -247,9 +239,9 @@ a {
 								<div class="product_price">{{product.price}}</div>
 								<div class="button_container">
 									<button v-if="!cart.find(c => c.id === product.id)" @click="addCart(product)" type="button" class="button cart_button">Добавить в корзину</button>
-									<button v-else type="button" style="background-color:green;" class="button cart_button">Добавлен</button>
+									<button v-else @click="addCart(product)" type="button" style="background-color:green;" class="button cart_button">Добавлен</button>
 									<div v-if="!wishlist.find(w => w.id === product.id)" @click="addWishlist(product)" class="product_fav"><i class="fas fa-heart"></i></div>
-									<div v-else class="product_fav"><i style="color:green;" class="fas fa-heart"></i></div>
+									<div v-else @click="addWishlist(product)" class="product_fav"><i style="color:green;" class="fas fa-heart"></i></div>
 								</div>
 								
 							</form>
@@ -268,7 +260,7 @@ a {
 			<div class="row">
 				<div class="col">
 					<div class="viewed_title_container">
-						<h3 class="viewed_title">Недавно просмотренные</h3>
+						<h3 class="viewed_title">Понравившиеся</h3>
 						<div class="viewed_nav_container">
 							<div class="viewed_nav viewed_prev"><i class="fas fa-chevron-left"></i></div>
 							<div class="viewed_nav viewed_next"><i class="fas fa-chevron-right"></i></div>
@@ -283,11 +275,11 @@ a {
 							
 							<!-- Недавно просмотренные Item -->
 							<div v-for="(item, index) in wishlist" :key="index" class="owl-item">
-								<div :class="{is_new: item.isNew && item.discount === 0, discount: item.discount > 0}" class="viewed_item d-flex flex-column align-items-center justify-content-center text-center">
-									<div class="viewed_image"><img :src="item.image" alt=""></div>
+								<div :class="{is_new: item.isNew && !item.discount, discount: item.discount}" class="viewed_item d-flex flex-column align-items-center justify-content-center text-center">
+									<div @click="onProduct(item)" style="cursor:pointer;" class="viewed_image"><img :src="item.image" alt=""></div>
 									<div class="viewed_content text-center">
-										<div class="viewed_price">${{item.price}}<span>${{Math.round(item.price * (1 + (item.discount/100)))}}</span></div>
-										<div class="viewed_name"><a href="#">{{item.title}}</a></div>
+										<div class="viewed_price">${{item.price}}<span v-if="item.discount">${{Math.round(item.price * (1 + (item.discount/100)))}}</span></div>
+										<div class="viewed_name">{{item.title}}</div>
 									</div>
 									<ul class="item_marks">
 										<li class="item_mark item_discount">{{item.discount}}%</li>
@@ -466,6 +458,7 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 </div>
 </div>
 <!-- End Vue -->
+<script src="vue.js"></script>
 <script src="resources/shop-data.js"></script>
 <script src="resources/shop-products.js"></script>
 <script>
@@ -474,6 +467,7 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 	  data() {
 		return {
 		    data: {},
+			search: '',
 			categories: [],
 			product: {},
 			cart: [],
@@ -506,6 +500,25 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 		}
 	  },
 	  methods:{
+	    onSearch(){
+			if(this.search){
+				let search = [];
+				for(let product of products){
+				  if(product.category.toLowerCase().includes(this.search.toLowerCase())){
+					search.push(product);
+				  } else if(product.subcategory.toLowerCase().includes(this.search.toLowerCase())){
+					search.push(product);
+				  } else if(product.title.toLowerCase().includes(this.search.toLowerCase())){
+					search.push(product);
+				  } else if(product.description.toLowerCase().includes(this.search.toLowerCase())){
+					search.push(product);
+				  }
+				}
+				sessionStorage.setItem("shop-search", JSON.stringify(search));
+				this.search = '';
+				window.location.href = "shop.html";
+			}
+		},
 	    qtPlus(){
 		  this.qt++;
 		  this.product.qt = this.qt;
@@ -518,28 +531,36 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 		  }
 		},
 	    addCart(product){
-		    let isAdd = false;
-		    for(let item of this.cart){
-		      if(item.id === product.id){
-			    isAdd = true;
-			  }
-		    }
-		    if(!isAdd){
-		      this.cart.push(product);
-		    }
-		    localStorage.setItem("shop-cart", JSON.stringify(this.cart));
-		},
-		addWishlist(product){
 			let isAdd = false;
-			for(let item of this.wishlist){
-			  if(item.id === product.id){
+			for(let i = 0; i < this.cart.length; i++){
+			  if(this.cart[i].id === product.id){
+				this.cart.splice(i, 1);
 				isAdd = true;
+				break;
 			  }
 			}
 			if(!isAdd){
-			  this.wishlist.push(product);
+			  this.cart.push(product);
+			}
+			localStorage.setItem("shop-cart", JSON.stringify(this.cart));
+		},
+		addWishlist(product){
+			let isAdd = false;
+			for(let i = 0; i < this.wishlist.length; i++){
+			  if(this.wishlist[i].id === product.id){
+				this.wishlist.splice(i, 1);
+				isAdd = true;
+				break;
+			  }
+			}
+			if(!isAdd){
+			  this.wishlist.unshift(product);
 			}
 			localStorage.setItem("shop-wishlist", JSON.stringify(this.wishlist));
+		},
+		onProduct(product){
+			localStorage.setItem("shop-product", JSON.stringify(product));
+			window.location.reload();
 		},
 		onSubcategory(category, subcategory){
 		    let data = {category:category, subcategory:subcategory};

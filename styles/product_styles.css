@@ -1713,6 +1713,9 @@ select option
 .viewed_name
 {
 	margin-top: 3px;
+	white-space: nowrap; /* Запрещаем перенос строк */
+    overflow: hidden; /* Обрезаем все, что не помещается в область */
+    text-overflow: ellipsis; /* Добавляем многоточие */
 }
 .viewed_name a
 {

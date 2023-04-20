@@ -1995,7 +1995,7 @@ select option
 
 .popular_categories
 {
-	padding-top: 88px;
+	padding-top: 10px;
 	padding-bottom: 90px;
 }
 .popular_categories_title
@@ -2209,7 +2209,7 @@ select option
 {
 	width: 100%;
 	padding-top: 96px;
-	padding-bottom: 96px;
+	padding-bottom: 10px;
 }
 .new_arrivals_title
 {
@@ -2561,12 +2561,11 @@ select option
 }
 .bestsellers_image img
 {
-	max-width: 100%;
-	max-height: 100%;
+	max-width: 100px;
 }
 .bestsellers_content
 {
-	padding-left: 25px;
+	padding-left: 15px;
 }
 .bestsellers_category a
 {
@@ -2585,6 +2584,10 @@ select option
 .bestsellers_name
 {
 	margin-top: 2px;
+	width:70%;
+	white-space: nowrap; /* Запрещаем перенос строк */
+    overflow: hidden; /* Обрезаем все, что не помещается в область */
+    text-overflow: ellipsis; /* Добавляем многоточие */
 }
 .bestsellers_name a
 {
@@ -2774,9 +2777,18 @@ select option
 }
 .advert_title_2 a
 {
-	font-size: 18px;
+	font-size: 14px;
 	font-weight: 500;
 	color: #0e8ce4;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-height: 18px;    
+    max-height: 54px;     
+    -webkit-line-clamp: 3; /* Write the number of 
+                              lines you want to be 
+                              displayed */
+    -webkit-box-orient: vertical;
 }
 .advert_title_2 a:hover
 {
@@ -2911,6 +2923,9 @@ select option
 .trends_content
 {
 	margin-top: 24px;
+	white-space: nowrap; /* Запрещаем перенос строк */
+    overflow: hidden; /* Обрезаем все, что не помещается в область */
+    text-overflow: ellipsis; /* Добавляем многоточие */
 }
 .trends_name
 {
@@ -3258,6 +3273,9 @@ select option
 .viewed_name
 {
 	margin-top: 3px;
+	white-space: nowrap; /* Запрещаем перенос строк */
+    overflow: hidden; /* Обрезаем все, что не помещается в область */
+    text-overflow: ellipsis; /* Добавляем многоточие */
 }
 .viewed_name a
 {

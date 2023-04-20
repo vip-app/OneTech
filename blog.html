@@ -13,12 +13,12 @@
 <link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
 <link rel="stylesheet" type="text/css" href="styles/blog_styles.css">
 <link rel="stylesheet" type="text/css" href="styles/blog_responsive.css">
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 
 </head>
 
 <body>
-
+<!-- Start Vue -->
+<div id="blog_app">
 <div class="super_container">
 	
 	<!-- Header -->
@@ -31,35 +31,8 @@
 			<div class="container">
 				<div class="row">
 					<div class="col d-flex flex-row">
-						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/phone.png" alt=""></div>+38 068 005 3570</div>
-						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/mail.png" alt=""></div><a href="mailto:fastsales@gmail.com">fastsales@gmail.com</a></div>
-						<div class="top_bar_content ml-auto">
-							<div class="top_bar_menu">
-								<ul class="standard_dropdown top_bar_dropdown">
-									<li>
-										<a href="#">Английский<i class="fas fa-chevron-down"></i></a>
-										<ul>
-											<li><a href="#">Итальянский</a></li>
-											<li><a href="#">Испанский</a></li>
-											<li><a href="#">Японский</a></li>
-										</ul>
-									</li>
-									<li>
-										<a href="#">$ US dollar<i class="fas fa-chevron-down"></i></a>
-										<ul>
-											<li><a href="#">EUR Euro</a></li>
-											<li><a href="#">GBP British Pound</a></li>
-											<li><a href="#">JPY Японский Yen</a></li>
-										</ul>
-									</li>
-								</ul>
-							</div>
-							<div class="top_bar_user">
-								<div class="user_icon"><img src="images/user.svg" alt=""></div>
-								<div><a href="#">Регистрация</a></div>
-								<div><a href="#">Войти</a></div>
-							</div>
-						</div>
+						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/phone.png" alt=""></div>{{data.tel}}</div>
+						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/mail.png" alt=""></div><a href=`mailto:${data.email}`>{{data.email}}</a></div>
 					</div>
 				</div>
 			</div>		
@@ -74,7 +47,7 @@
 					<!-- Logo -->
 					<div class="col-lg-2 col-sm-3 col-3 order-1">
 						<div class="logo_container">
-							<div class="logo"><a href="#">OneTech</a></div>
+							<div class="logo"><a href="#">{{data.title}}</a></div>
 						</div>
 					</div>
 
@@ -83,23 +56,15 @@
 						<div class="header_search">
 							<div class="header_search_content">
 								<div class="header_search_form_container">
-									<form action="#" class="header_search_form clearfix">
-										<input type="search" required="required" class="header_search_input" placeholder="Поиск товаров...">
+									<form class="header_search_form clearfix">
+										<input v-model="search" type="search" required="required" class="header_search_input" placeholder="Поиск товаров...">
 										<div class="custom_dropdown">
 											<div class="custom_dropdown_list">
 												<span class="custom_dropdown_placeholder clc">Все категории</span>
-												<i class="fas fa-chevron-down"></i>
-												<ul class="custom_list clc">
-													<li><a class="clc" href="#">Все категории</a></li>
-													<li><a class="clc" href="#">Компьютеры</a></li>
-													<li><a class="clc" href="#">Ноутбуки</a></li>
-													<li><a class="clc" href="#">Камеры</a></li>
-													<li><a class="clc" href="#">Комплектующие</a></li>
-													<li><a class="clc" href="#">Смартфоны</a></li>
-												</ul>
+												<ul class="custom_list clc"></ul>
 											</div>
 										</div>
-										<button type="submit" class="header_search_button trans_300" value="Submit"><img src="images/search.png" alt=""></button>
+										<button @click="onSearch()" type="button" class="header_search_button trans_300"><img src="images/search.png" alt=""></button>
 									</form>
 								</div>
 							</div>
@@ -110,10 +75,10 @@
 					<div class="col-lg-4 col-9 order-lg-3 order-2 text-lg-left text-right">
 						<div class="wishlist_cart d-flex flex-row align-items-center justify-content-end">
 							<div class="wishlist d-flex flex-row align-items-center justify-content-end">
-								<div class="wishlist_icon"><img src="images/heart.png" alt=""></div>
+								<div class="wishlist_icon"><a href="#wishlist"><img src="images/heart.png" alt=""></a></div>
 								<div class="wishlist_content">
-									<div class="wishlist_text"><a href="#">Избранные</a></div>
-									<div class="wishlist_count">115</div>
+									<div class="wishlist_text"><a href="#wishlist">Избранные</a></div>
+									<div class="wishlist_count">{{wishlist.length}}</div>
 								</div>
 							</div>
 
@@ -121,12 +86,14 @@
 							<div class="cart">
 								<div class="cart_container d-flex flex-row align-items-center justify-content-end">
 									<div class="cart_icon">
-										<img src="images/cart.png" alt="">
-										<div class="cart_count"><span>10</span></div>
+										<a href="cart.html">
+										    <img src="images/cart.png" alt="">
+										    <div class="cart_count"><span>{{cart.length}}</span></div>
+										</a>
 									</div>
 									<div class="cart_content">
 										<div class="cart_text"><a href="cart.html">Корзина</a></div>
-										<div class="cart_price">$85</div>
+										<div class="cart_price">${{totalAmount}}</div>
 									</div>
 								</div>
 							</div>
@@ -150,87 +117,29 @@
 							<div class="cat_menu_container">
 								<div class="cat_menu_title d-flex flex-row align-items-center justify-content-start">
 									<div class="cat_burger"><span></span><span></span><span></span></div>
-									<div class="cat_menu_text">категории</div>
+									<div class="cat_menu_text">КАТЕГОРИИ</div>
 								</div>
 
-								<ul class="cat_menu">
-									<li><a href="#">Компьютеры и ноутбуки <i class="fas fa-chevron-right ml-auto"></i></a></li>
-									<li><a href="#">Безопасность и защита<i class="fas fa-chevron-right"></i></a></li>
-									<li class="hassubs">
-										<a href="#">Комплектующие<i class="fas fa-chevron-right"></i></a>
+								<ul v-if="categories.length" class="cat_menu">
+									<li v-for="(category, index) in categories" :key="index" class="hassubs">
+										<a style="color:gray;">{{category.category}}<i class="fas fa-chevron-right"></i></a>
 										<ul>
-											<li class="hassubs">
-												<a href="#">Menu Item<i class="fas fa-chevron-right"></i></a>
-												<ul>
-													<li><a href="#">Menu Item<i class="fas fa-chevron-right"></i></a></li>
-													<li><a href="#">Menu Item<i class="fas fa-chevron-right"></i></a></li>
-													<li><a href="#">Menu Item<i class="fas fa-chevron-right"></i></a></li>
-													<li><a href="#">Menu Item<i class="fas fa-chevron-right"></i></a></li>
-												</ul>
+											<li v-for="(subcategory, index) in category.subcategories" :key="index">
+												<a @click="onSubcategory(category.category, subcategory.subcategory)" style="color:gray;">{{subcategory.subcategory}}<i class="fas fa-chevron-right"></i></a>
 											</li>
-											<li><a href="#">Menu Item<i class="fas fa-chevron-right"></i></a></li>
-											<li><a href="#">Menu Item<i class="fas fa-chevron-right"></i></a></li>
-											<li><a href="#">Menu Item<i class="fas fa-chevron-right"></i></a></li>
 										</ul>
 									</li>
-									<li><a href="#">Смартфоны и планшеты<i class="fas fa-chevron-right"></i></a></li>
-									<li><a href="#">ТВ и аудио<i class="fas fa-chevron-right"></i></a></li>
-									<li><a href="#">Гаджеты<i class="fas fa-chevron-right"></i></a></li>
-									<li><a href="#">Авто электроника<i class="fas fa-chevron-right"></i></a></li>
-									<li><a href="#">Видеоигры и консоли<i class="fas fa-chevron-right"></i></a></li>
-									<li><a href="#">Аксессуары<i class="fas fa-chevron-right"></i></a></li>
 								</ul>
 							</div>
 
 							<!-- Main Nav Menu -->
 
-							<div class="main_nav_menu ml-auto">
+							<div class="main_nav_menu ml-auto mr-auto">
 								<ul class="standard_dropdown main_nav_dropdown">
 									<li><a href="index.html">Главная<i class="fas fa-chevron-down"></i></a></li>
-									<li class="hassubs">
-										<a href="#">Лучшие предложения<i class="fas fa-chevron-down"></i></a>
-										<ul>
-											<li>
-												<a href="#">Menu Item<i class="fas fa-chevron-down"></i></a>
-												<ul>
-													<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-													<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-													<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-												</ul>
-											</li>
-											<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-											<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-											<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-										</ul>
-									</li>
-									<li class="hassubs">
-										<a href="#">Топ бренды<i class="fas fa-chevron-down"></i></a>
-										<ul>
-											<li>
-												<a href="#">Menu Item<i class="fas fa-chevron-down"></i></a>
-												<ul>
-													<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-													<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-													<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-												</ul>
-											</li>
-											<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-											<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-											<li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-										</ul>
-									</li>
-									<li class="hassubs">
-										<a href="#">Страницы<i class="fas fa-chevron-down"></i></a>
-										<ul>
-											<li><a href="shop.html">Магазин<i class="fas fa-chevron-down"></i></a></li>
-											<li><a href="product.html">Продукт<i class="fas fa-chevron-down"></i></a></li>
-											<li><a href="blog.html">Блог<i class="fas fa-chevron-down"></i></a></li>
-											<li><a href="blog_single.html">Блог Post<i class="fas fa-chevron-down"></i></a></li>
-											<li><a href="regular.html">Regular Post<i class="fas fa-chevron-down"></i></a></li>
-											<li><a href="cart.html">Корзина<i class="fas fa-chevron-down"></i></a></li>
-											<li><a href="contact.html">Контакты<i class="fas fa-chevron-down"></i></a></li>
-										</ul>
-									</li>
+									<li><a href="shop.html">Магазин<i class="fas fa-chevron-down"></i></a></li>
+									<li><a href="cart.html">Корзина<i class="fas fa-chevron-down"></i></a></li>
+									<li><a href="regular.html">Regular Post<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="blog.html">Блог<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="contact.html">Контакты<i class="fas fa-chevron-down"></i></a></li>
 								</ul>
@@ -241,7 +150,7 @@
 							<div class="menu_trigger_container ml-auto">
 								<div class="menu_trigger d-flex flex-row align-items-center justify-content-end">
 									<div class="menu_burger">
-										<div class="menu_trigger_text">меню</div>
+										<div class="menu_trigger_text">МЕНЮ</div>
 										<div class="cat_burger menu_burger_inner"><span></span><span></span><span></span></div>
 									</div>
 								</div>
@@ -263,75 +172,23 @@
 						<div class="page_menu_content">
 							
 							<div class="page_menu_search">
-								<form action="#">
-									<input type="search" required="required" class="page_menu_search_input" placeholder="Поиск товаров...">
+								<form>
+									<input v-model="search" type="search" required="required" class="page_menu_search_input" placeholder="Поиск товаров...">
+									<button @click="onSearch()" type="button" class="header_search_button trans_300"><img src="images/search.png" alt=""></button>
 								</form>
 							</div>
 							<ul class="page_menu_nav">
-								<li class="page_menu_item has-children">
-									<a href="#">Язык<i class="fa fa-angle-down"></i></a>
-									<ul class="page_menu_selection">
-										<li><a href="#">Английский<i class="fa fa-angle-down"></i></a></li>
-										<li><a href="#">Итальянский<i class="fa fa-angle-down"></i></a></li>
-										<li><a href="#">Испанский<i class="fa fa-angle-down"></i></a></li>
-										<li><a href="#">Японский<i class="fa fa-angle-down"></i></a></li>
-									</ul>
-								</li>
-								<li class="page_menu_item has-children">
-									<a href="#">Валюта<i class="fa fa-angle-down"></i></a>
-									<ul class="page_menu_selection">
-										<li><a href="#">US Dollar<i class="fa fa-angle-down"></i></a></li>
-										<li><a href="#">EUR Euro<i class="fa fa-angle-down"></i></a></li>
-										<li><a href="#">GBP British Pound<i class="fa fa-angle-down"></i></a></li>
-										<li><a href="#">JPY Японский Yen<i class="fa fa-angle-down"></i></a></li>
-									</ul>
-								</li>
-								<li class="page_menu_item">
-									<a href="index.html">Главная<i class="fa fa-angle-down"></i></a>
-								</li>
-								<li class="page_menu_item has-children">
-									<a href="#">Лучшие предложения<i class="fa fa-angle-down"></i></a>
-									<ul class="page_menu_selection">
-										<li><a href="#">Лучшие предложения<i class="fa fa-angle-down"></i></a></li>
-										<li class="page_menu_item has-children">
-											<a href="#">Menu Item<i class="fa fa-angle-down"></i></a>
-											<ul class="page_menu_selection">
-												<li><a href="#">Menu Item<i class="fa fa-angle-down"></i></a></li>
-												<li><a href="#">Menu Item<i class="fa fa-angle-down"></i></a></li>
-												<li><a href="#">Menu Item<i class="fa fa-angle-down"></i></a></li>
-												<li><a href="#">Menu Item<i class="fa fa-angle-down"></i></a></li>
-											</ul>
-										</li>
-										<li><a href="#">Menu Item<i class="fa fa-angle-down"></i></a></li>
-										<li><a href="#">Menu Item<i class="fa fa-angle-down"></i></a></li>
-										<li><a href="#">Menu Item<i class="fa fa-angle-down"></i></a></li>
-									</ul>
-								</li>
-								<li class="page_menu_item has-children">
-									<a href="#">Топ бренды<i class="fa fa-angle-down"></i></a>
-									<ul class="page_menu_selection">
-										<li><a href="#">Топ бренды<i class="fa fa-angle-down"></i></a></li>
-										<li><a href="#">Menu Item<i class="fa fa-angle-down"></i></a></li>
-										<li><a href="#">Menu Item<i class="fa fa-angle-down"></i></a></li>
-										<li><a href="#">Menu Item<i class="fa fa-angle-down"></i></a></li>
-									</ul>
-								</li>
-								<li class="page_menu_item has-children">
-									<a href="#">Популярные стили<i class="fa fa-angle-down"></i></a>
-									<ul class="page_menu_selection">
-										<li><a href="#">Популярные стили<i class="fa fa-angle-down"></i></a></li>
-										<li><a href="#">Menu Item<i class="fa fa-angle-down"></i></a></li>
-										<li><a href="#">Menu Item<i class="fa fa-angle-down"></i></a></li>
-										<li><a href="#">Menu Item<i class="fa fa-angle-down"></i></a></li>
-									</ul>
-								</li>
-								<li class="page_menu_item"><a href="#">блог<i class="fa fa-angle-down"></i></a></li>
-								<li class="page_menu_item"><a href="contact.html">контакты<i class="fa fa-angle-down"></i></a></li>
+								<li class="page_menu_item"><a href="index.html">Главная<i class="fa fa-angle-down"></i></a></li>
+								<li class="page_menu_item"><a href="shop.html">Магазин<i class="fa fa-angle-down"></i></a></li>
+								<li class="page_menu_item"><a href="cart.html">Корзина<i class="fa fa-angle-down"></i></a></li>
+								<li class="page_menu_item"><a href="regular.html">Regular Post<i class="fa fa-angle-down"></i></a></li>
+								<li class="page_menu_item"><a href="blog.html">Блог<i class="fa fa-angle-down"></i></a></li>
+								<li class="page_menu_item"><a href="contact.html">Контакты<i class="fa fa-angle-down"></i></a></li>
 							</ul>
 							
 							<div class="menu_contact">
-								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/phone_white.png" alt=""></div>+38 068 005 3570</div>
-								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/mail_white.png" alt=""></div><a href="mailto:fastsales@gmail.com">fastsales@gmail.com</a></div>
+								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/phone_white.png" alt=""></div>{{data.tel}}</div>
+								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/mail_white.png" alt=""></div><a href=`mailto:${data.email}`>{{data.email}}</a></div>
 							</div>
 						</div>
 					</div>
@@ -540,7 +397,7 @@
 					
 					<div class="copyright_container d-flex flex-sm-row flex-column align-items-center justify-content-start">
 						<div class="copyright_content"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+Copyright &copy; {{copyright}} All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 </div>
 						<div class="logos ml-sm-auto">
@@ -557,7 +414,105 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		</div>
 	</div>
 </div>
-
+</div>
+<!-- End Vue -->
+<script src="vue.js"></script>
+<script src="resources/shop-data.js"></script>
+<script src="resources/shop-products.js"></script>
+<script>
+	new Vue({
+	  el: '#blog_app',
+	  data() {
+		return {
+		    data: {},
+			search: '',
+			categories: [],
+			cart: [],
+			wishlist: [],
+			copyright: '',
+		}
+	  },
+	  mounted() {
+	    this.data = data;
+	    let cart = JSON.parse(localStorage.getItem("shop-cart"));
+		if(cart){
+		  this.cart = cart;
+		}
+		let wishlist = JSON.parse(localStorage.getItem("shop-wishlist"));
+		if(wishlist){
+		  this.wishlist = wishlist;
+		}
+		this.categories = this.getCategories(products);
+		this.copyright = new Date().getFullYear();
+	  },
+	  computed:{
+		totalAmount(){
+			let total = 0;
+			for(let product of this.cart){
+			  total = total + product.price * product.qt;
+			}
+			return total;
+		}
+	  },
+	  methods:{
+	    onSearch(){
+			if(this.search){
+				let search = [];
+				for(let product of products){
+				  if(product.category.toLowerCase().includes(this.search.toLowerCase())){
+					search.push(product);
+				  } else if(product.subcategory.toLowerCase().includes(this.search.toLowerCase())){
+					search.push(product);
+				  } else if(product.title.toLowerCase().includes(this.search.toLowerCase())){
+					search.push(product);
+				  } else if(product.description.toLowerCase().includes(this.search.toLowerCase())){
+					search.push(product);
+				  }
+				}
+				sessionStorage.setItem("shop-search", JSON.stringify(search));
+				this.search = '';
+				window.location.href = "shop.html";
+			}
+		},
+		onSubcategory(category, subcategory){
+		    let data = {category:category, subcategory:subcategory};
+		    sessionStorage.setItem("shop-data", JSON.stringify(data));
+			window.location.href = "shop.html";
+		},
+		getCategories(products){
+			let categories = [];
+			let map = new Map();
+			for(let product of products){
+			  map = {category: product.category, subcategories: [{subcategory: product.subcategory}]};
+			  categories.push(map);
+			}
+			
+			categories = categories.filter((value, index, self) =>
+			  index === self.findIndex((t) => (
+				t.category === value.category && t.subcategories[0].subcategory === value.subcategories[0].subcategory
+			  ))
+			)
+			
+			for(let category of categories){
+			  for(let i = 0; i < categories.length; i++){
+				if(category.category === categories[i].category){
+				  category.subcategories.push(categories[i].subcategories[0]);
+				}
+			  }
+			  category.subcategories.splice(0, 1);
+			}
+			
+			categories = categories.filter((value, index, self) =>
+			  index === self.findIndex((t) => (
+				t.category === value.category
+			  ))
+			)
+			
+			return categories;
+		},
+	  }
+	})
+</script>
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="styles/bootstrap4/popper.js"></script>
 <script src="styles/bootstrap4/bootstrap.min.js"></script>
