@@ -324,8 +324,8 @@
 	}
 	.banner_product_image
 	{
-		opacity: 0.5;
-		width: 60vw;
+		opacity: 0.8;
+		width: 90vw;
 	    top: 50%;
 	    -webkit-transform: translateY(-50%);
 		-moz-transform: translateY(-50%);

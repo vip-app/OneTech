@@ -52,7 +52,7 @@ a {
 					<!-- Logo -->
 					<div class="col-lg-2 col-sm-3 col-3 order-1">
 						<div class="logo_container">
-							<div class="logo"><a href="#">{{data.title}}</a></div>
+							<div class="logo"><a href="index.html">{{data.title}}</a></div>
 						</div>
 					</div>
 
@@ -278,7 +278,7 @@ a {
 								<div @click="onProduct(item)" class="product_image d-flex flex-column align-items-center justify-content-center"><img :src="item.image" width="100px" alt=""></div>
 								<div class="product_content">
 									<div class="product_price">${{item.price}}<span v-if="item.discount">${{Math.round(item.price * (1 + (item.discount/100)))}}</span></div>
-									<div class="product_name"><div><a @click="onProduct(item)" style="color:#000000;">{{item.title}}</a></div></div>
+									<div class="product_name"><div><a style="color:#000000;">{{item.title}}</a></div></div>
 								</div>
 								<div v-if="!wishlist.find(w => w.id === item.id)" @click.stop="addWishlist(item)" class="product_fav"><i class="fas fa-heart"></i></div>
 								<div v-else @click.stop="addWishlist(item)" class="product_fav"><i style="color:green;" class="fas fa-heart"></i></div>

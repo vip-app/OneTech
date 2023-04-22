@@ -48,7 +48,7 @@ a {
 					<!-- Logo -->
 					<div class="col-lg-2 col-sm-3 col-3 order-1">
 						<div class="logo_container">
-							<div class="logo"><a href="#">{{data.title}}</a></div>
+							<div class="logo"><a href="index.html">{{data.title}}</a></div>
 						</div>
 					</div>
 
@@ -171,8 +171,9 @@ a {
 						<div class="page_menu_content">
 							
 							<div class="page_menu_search">
-								<form action="#">
-									<input type="search" required="required" class="page_menu_search_input" placeholder="Поиск товаров...">
+								<form>
+									<input v-model="search" type="search" required="required" class="page_menu_search_input" placeholder="Поиск товаров...">
+									<button @click="onSearch()" type="button" class="header_search_button trans_300"><img src="images/search.png" alt=""></button>
 								</form>
 							</div>
 							<ul class="page_menu_nav">
@@ -242,8 +243,8 @@ a {
 						</div>
 
 						<div class="cart_buttons">
-							<button @click="removeCart" type="button" class="button cart_button_checkout">Очистить корзину</button>
-							<button type="button" class="button cart_button_checkout">Добавить в корзину</button>
+							<button @click="removeCart()" type="button" class="button cart_button_checkout">Очистить</button>
+							<button @click="sendOrder()" type="button" class="button cart_button_checkout">Отправить заказ</button>
 						</div>
 					</div>
 				</div>
@@ -394,6 +395,8 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 			categories: [],
 			cart: [],
 			wishlist: [],
+			message: 'Привет, это сообщение отправлено с помощью ссылки на WhatsApp!',
+			phone: '+79640626525',
 			copyright: '',
 		}
 	  },
@@ -420,6 +423,16 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 		}
 	  },
 	  methods:{
+	    createWhatsAppLink(this.message, this.phone) {
+			  if (!phone.startsWith('+')) {
+				phone = `+${phone}`;
+			  }
+
+			  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+			  window.location.href = url;
+			},
+		},
 	    onSearch(){
 			if(this.search){
 				let search = [];
