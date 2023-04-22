@@ -4,6 +4,6 @@ const data = {
 		whatsapp: "",
 		telegram: "",
 		image: "",
-		email: "fastsales@gmail.com",
+		email: "seemenu.ru@gmail.com",
 		address: ""
 	};

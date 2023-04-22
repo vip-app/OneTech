@@ -36,7 +36,7 @@ a{
 			<div class="container">
 				<div class="row">
 					<div class="col d-flex flex-row">
-						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/phone.png" alt=""></div>{{data.tel}}</div>
+						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/phone.png" alt=""></div><a href=`tel:${data.email}`>{{data.tel}}</a></div>
 						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/mail.png" alt=""></div><a href=`mailto:${data.email}`>{{data.email}}</a></div>
 					</div>
 				</div>
@@ -860,9 +860,9 @@ a{
 							<div class="newsletter_text"><p>... и получите купон на 20% на первую покупку.</p></div>
 						</div>
 						<div class="newsletter_content clearfix">
-							<form action="#" class="newsletter_form">
-								<input type="email" class="newsletter_input" required="required" placeholder="Введите ваш адрес электронной почты">
-								<button class="newsletter_button">Подписаться</button>
+							<form class="newsletter_form">
+								<input v-model="email" type="email" class="newsletter_input" required="required" placeholder="Введите ваш адрес электронной почты">
+								<button @click="sendEmail()" class="newsletter_button">Подписаться</button>
 							</form>
 							<div class="newsletter_unsubscribe_link"><a href="#">отказаться от подписки</a></div>
 						</div>
@@ -996,6 +996,7 @@ new Vue({
 	topdiscounts: [],
 	topprices: [],
 	endproducts: [],
+	email: '',
 	copyright: '',
   },
   mounted() {
@@ -1031,6 +1032,13 @@ new Vue({
 	}
   },
   methods:{
+    sendEmail() {
+      const email = this.data.email;
+      const subject = 'Я согласен на подписку!';
+      const body = this.email;
+
+      window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    },
     onSearch(){
 	    if(this.search){
 			let search = [];
