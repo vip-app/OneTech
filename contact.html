@@ -461,13 +461,13 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 				}
 				sessionStorage.setItem("shop-search", JSON.stringify(search));
 				this.search = '';
-				window.location.href = "shop.html";
+				location.href = "shop.html";
 			}
 		},
 		onSubcategory(category, subcategory){
 		    let data = {category:category, subcategory:subcategory};
 		    sessionStorage.setItem("shop-data", JSON.stringify(data));
-			window.location.href = "shop.html";
+			location.href = "shop.html";
 		},
 		getCategories(products){
 			let categories = [];

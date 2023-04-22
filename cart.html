@@ -424,13 +424,19 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 	  },
 	  methods:{
 	    sendOrder() {
+		      let message = '';
 			  if (!this.phone.startsWith('+')) {
 				this.phone = `+${this.phone}`;
 			  }
+			  for(let item of this.cart){
+			    message = `${message}${item.title}(${item.qt});\n`;
+			  }
+			  
+			  this.message = `*Заказ:* ${message}.\n *Сумма:* ${this.totalAmount} руб.`;
 
 			  const url = `https://wa.me/${this.phone}?text=${encodeURIComponent(this.message)}`;
 
-			  window.location.href = url;
+			  location.href = url;
 		},
 	    onSearch(){
 			if(this.search){
@@ -448,7 +454,7 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 				}
 				sessionStorage.setItem("shop-search", JSON.stringify(search));
 				this.search = '';
-				window.location.href = "shop.html";
+				location.href = "shop.html";
 			}
 		},
 	    removeCart(){
@@ -459,7 +465,7 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 	    onSubcategory(category, subcategory){
 		    let data = {category:category, subcategory:subcategory};
 		    sessionStorage.setItem("shop-data", JSON.stringify(data));
-			window.location.href = "shop.html";
+			location.href = "shop.html";
 		},
 	    getCategories(products){
 			let categories = [];

@@ -1047,7 +1047,7 @@ new Vue({
 			}
 			sessionStorage.setItem("shop-search", JSON.stringify(search));
 			this.search = '';
-			window.location.href = "shop.html";
+			location.href = "shop.html";
 		}
 	},
     topDiscounts(){
@@ -1121,12 +1121,12 @@ new Vue({
 	onProduct(product){
 		localStorage.setItem("shop-product", JSON.stringify(product));
 		this.addViewed(product);
-		window.location.href = "product.html";
+		location.href = "product.html";
 	},
     onSubcategory(category, subcategory){
 		let data = {category:category, subcategory:subcategory};
 		sessionStorage.setItem("shop-data", JSON.stringify(data));
-		window.location.href = "shop.html";
+		location.href = "shop.html";
 	},
     getCategories(products){
         let categories = [];

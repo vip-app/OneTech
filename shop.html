@@ -665,7 +665,7 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 		onProduct(product){
 			localStorage.setItem("shop-product", JSON.stringify(product));
 			this.addViewed(product);
-			window.location.href = "product.html";
+			location.href = "product.html";
 		},
 	    onCategory(category){
 		    this.currentCategory = category;
