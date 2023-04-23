@@ -236,7 +236,7 @@
 	}
 	.tabs
 	{
-		padding-top: 80px;
+		padding-top: 0px;
 	}
 	.tabs.tabs-right ul
 	{
@@ -770,7 +770,7 @@
 	}
 	.reviews
 	{
-		padding-bottom: 80px;
+		padding-bottom: 60px;
 	}
 	.reviews_all a span
 	{

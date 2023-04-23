@@ -2208,7 +2208,7 @@ select option
 .new_arrivals
 {
 	width: 100%;
-	padding-top: 96px;
+	padding-top: 40px;
 	padding-bottom: 10px;
 }
 .new_arrivals_title
@@ -2231,7 +2231,7 @@ select option
 }
 .arrivals_slider .slick-track
 {
-	padding-bottom: 80px;
+	padding-bottom: 60px;
 }
 .arrivals_slider_item
 {
@@ -3045,7 +3045,7 @@ select option
 
 .reviews
 {
-	padding-top: 96px;
+	padding-top: 60px;
 	padding-bottom: 125px;
 }
 .reviews_title_container

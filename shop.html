@@ -14,11 +14,6 @@
 <link rel="stylesheet" type="text/css" href="plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
 <link rel="stylesheet" type="text/css" href="styles/shop_styles.css">
 <link rel="stylesheet" type="text/css" href="styles/shop_responsive.css">
-<style>
-a {
-  cursor:pointer;
-}
-</style>
 </head>
 
 <body>
@@ -36,8 +31,8 @@ a {
 			<div class="container">
 				<div class="row">
 					<div class="col d-flex flex-row">
-						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/phone.png" alt=""></div>{{data.tel}}</div>
-						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/mail.png" alt=""></div><a href=`mailto:${data.email}`>{{data.email}}</a></div>
+						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/phone.png" alt=""></div><a href=`tel:+${data.tel}`>+{{data.tel}}</a></div>
+						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/whatsapp.png" alt=""></div><a href=`https://wa.me/${data.whatsapp}`>+{{data.whatsapp}}</a></div>
 					</div>
 				</div>
 			</div>		
@@ -144,7 +139,7 @@ a {
 									<li><a href="index.html">Главная<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="shop.html">Магазин<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="cart.html">Корзина<i class="fas fa-chevron-down"></i></a></li>
-									<li><a href="regular.html">Regular Post<i class="fas fa-chevron-down"></i></a></li>
+									<li><a href="regular.html">Доставка и оплата<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="blog.html">Блог<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="contact.html">Контакты<i class="fas fa-chevron-down"></i></a></li>
 								</ul>
@@ -186,14 +181,14 @@ a {
 								<li class="page_menu_item"><a href="index.html">Главная<i class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item"><a href="shop.html">Магазин<i class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item"><a href="cart.html">Корзина<i class="fa fa-angle-down"></i></a></li>
-								<li class="page_menu_item"><a href="regular.html">Regular Post<i class="fa fa-angle-down"></i></a></li>
+								<li class="page_menu_item"><a href="regular.html">Доставка и оплата<i class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item"><a href="blog.html">Блог<i class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item"><a href="contact.html">Контакты<i class="fa fa-angle-down"></i></a></li>
 							</ul>
 							
 							<div class="menu_contact">
-								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/phone_white.png" alt=""></div>{{data.tel}}</div>
-								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/mail_white.png" alt=""></div><a href=`mailto:${data.email}`>{{data.email}}</a></div>
+								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/phone_menu.png" alt=""></div><a href=`tel:+${data.tel}`>+{{data.tel}}</a></div>
+								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/whatsapp_menu.png" alt=""></div><a href=`https://wa.me/${data.whatsapp}`>+{{data.whatsapp}}</a></div>
 							</div>
 						</div>
 					</div>
@@ -239,7 +234,7 @@ a {
 						<div class="sidebar_section">
 							<div class="sidebar_subtitle brands_subtitle">Бренды</div>
 							<ul class="brands_list">
-								<li v-for="(brand, index) in brands" :key="index" class="brand">
+							    <li v-for="(brand, index) in brands" :key="index" class="brand">
 									<a @click="onBrand(brand.brand)" :style="{color: brand.brand === currentBrand ? '#0e8ce4' : '#a3a3a3'}">{{brand.brand}}</a>
 								</li>
 							</ul>
@@ -673,8 +668,9 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 			let data = {category:this.currentCategory, subcategory:this.currentSubcategory};
 		    sessionStorage.setItem("shop-data", JSON.stringify(data));
 		    //this.currentProducts.splice(this.currentProducts.length);
-			if(this.currentCategory === ''){
+			if(!this.currentCategory){
 			  this.currentProducts = products;
+			  this.currentBrand = '';
 			} else {
 			  this.currentProducts = products.filter(product => product.category === this.currentCategory);
 			}

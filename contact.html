@@ -10,7 +10,6 @@
 <link href="plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="styles/contact_styles.css">
 <link rel="stylesheet" type="text/css" href="styles/contact_responsive.css">
-
 </head>
 
 <body>
@@ -28,8 +27,8 @@
 			<div class="container">
 				<div class="row">
 					<div class="col d-flex flex-row">
-						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/phone.png" alt=""></div>{{data.tel}}</div>
-						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/mail.png" alt=""></div><a href=`mailto:${data.email}`>{{data.email}}</a></div>
+						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/phone.png" alt=""></div><a href=`tel:+${data.tel}`>+{{data.tel}}</a></div>
+						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/whatsapp.png" alt=""></div><a href=`https://wa.me/${data.whatsapp}`>+{{data.whatsapp}}</a></div>
 					</div>
 				</div>
 			</div>		
@@ -136,7 +135,7 @@
 									<li><a href="index.html">Главная<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="shop.html">Магазин<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="cart.html">Корзина<i class="fas fa-chevron-down"></i></a></li>
-									<li><a href="regular.html">Regular Post<i class="fas fa-chevron-down"></i></a></li>
+									<li><a href="regular.html">Доставка и оплата<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="blog.html">Блог<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="contact.html">Контакты<i class="fas fa-chevron-down"></i></a></li>
 								</ul>
@@ -178,14 +177,14 @@
 								<li class="page_menu_item"><a href="index.html">Главная<i class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item"><a href="shop.html">Магазин<i class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item"><a href="cart.html">Корзина<i class="fa fa-angle-down"></i></a></li>
-								<li class="page_menu_item"><a href="regular.html">Regular Post<i class="fa fa-angle-down"></i></a></li>
+								<li class="page_menu_item"><a href="regular.html">Доставка и оплата<i class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item"><a href="blog.html">Блог<i class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item"><a href="contact.html">Контакты<i class="fa fa-angle-down"></i></a></li>
 							</ul>
 							
 							<div class="menu_contact">
-								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/phone_white.png" alt=""></div>{{data.tel}}</div>
-								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/mail_white.png" alt=""></div><a href=`mailto:${data.email}`>{{data.email}}</a></div>
+								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/phone_menu.png" alt=""></div><a href=`tel:+${data.tel}`>+{{data.tel}}</a></div>
+								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/whatsapp_menu.png" alt=""></div><a href=`https://wa.me/${data.whatsapp}`>+{{data.whatsapp}}</a></div>
 							</div>
 						</div>
 					</div>
@@ -204,29 +203,29 @@
 					<div class="contact_info_container d-flex flex-lg-row flex-column justify-content-between align-items-between">
 
 						<!-- Контакты Item -->
-						<div class="contact_info_item d-flex flex-row align-items-center justify-content-start">
+						<div @click="openTel()" class="contact_info_item d-flex flex-row align-items-center justify-content-start">
 							<div class="contact_info_image"><img src="images/contact_1.png" alt=""></div>
 							<div class="contact_info_content">
 								<div class="contact_info_title">Телефон</div>
-								<div class="contact_info_text">+38 068 005 3570</div>
+								<div class="contact_info_text">+{{data.tel}}</div>
 							</div>
 						</div>
 
 						<!-- Контакты Item -->
-						<div class="contact_info_item d-flex flex-row align-items-center justify-content-start">
-							<div class="contact_info_image"><img src="images/contact_2.png" alt=""></div>
+						<div @click="openWhatsApp()" class="contact_info_item d-flex flex-row align-items-center justify-content-start">
+							<div class="contact_info_image"><img src="images/whatsapp_2.png" alt=""></div>
 							<div class="contact_info_content">
-								<div class="contact_info_title">Электронная почта</div>
-								<div class="contact_info_text">fastsales@gmail.com</div>
+								<div class="contact_info_title">WhatsApp</div>
+								<div class="contact_info_text">+{{data.whatsapp}}</div>
 							</div>
 						</div>
 
 						<!-- Контакты Item -->
-						<div class="contact_info_item d-flex flex-row align-items-center justify-content-start">
+						<div @click="openAddress()" class="contact_info_item d-flex flex-row align-items-center justify-content-start">
 							<div class="contact_info_image"><img src="images/contact_3.png" alt=""></div>
 							<div class="contact_info_content">
 								<div class="contact_info_title">Адрес</div>
-								<div class="contact_info_text">10 Suffolk at Soho, London, UK</div>
+								<div class="contact_info_text">{{data.address}}</div>
 							</div>
 						</div>
 
@@ -445,6 +444,15 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 		}
 	  },
 	  methods:{
+	    openTel(){
+		    window.open(`tel:+${this.data.tel}`);
+		},
+		openWhatsApp(){
+		    window.open(`https://wa.me/${this.data.whatsapp}`);
+		},
+		openAddress(){
+		    window.open(`https://maps.google.com/?q=${this.data.address}`);
+		},
 	    onSearch(){
 			if(this.search){
 				let search = [];

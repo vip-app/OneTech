@@ -10,11 +10,6 @@
 <link href="plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="styles/cart_styles.css">
 <link rel="stylesheet" type="text/css" href="styles/cart_responsive.css">
-<style>
-a {
-  cursor:pointer;
-}
-</style>
 </head>
 
 <body>
@@ -32,8 +27,8 @@ a {
 			<div class="container">
 				<div class="row">
 					<div class="col d-flex flex-row">
-						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/phone.png" alt=""></div>{{data.tel}}</div>
-						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/mail.png" alt=""></div><a href=`mailto:${data.email}`>{{data.email}}</a></div>
+						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/phone.png" alt=""></div><a href=`tel:+${data.tel}`>+{{data.tel}}</a></div>
+						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/whatsapp.png" alt=""></div><a href=`https://wa.me/${data.whatsapp}`>+{{data.whatsapp}}</a></div>
 					</div>
 				</div>
 			</div>		
@@ -138,7 +133,7 @@ a {
 									<li><a href="index.html">Главная<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="shop.html">Магазин<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="cart.html">Корзина<i class="fas fa-chevron-down"></i></a></li>
-									<li><a href="regular.html">Regular Post<i class="fas fa-chevron-down"></i></a></li>
+									<li><a href="regular.html">Доставка и оплата<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="blog.html">Блог<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="contact.html">Контакты<i class="fas fa-chevron-down"></i></a></li>
 								</ul>
@@ -180,14 +175,14 @@ a {
 								<li class="page_menu_item"><a href="index.html">Главная<i class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item"><a href="shop.html">Магазин<i class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item"><a href="cart.html">Корзина<i class="fa fa-angle-down"></i></a></li>
-								<li class="page_menu_item"><a href="regular.html">Regular Post<i class="fa fa-angle-down"></i></a></li>
+								<li class="page_menu_item"><a href="regular.html">Доставка и оплата<i class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item"><a href="blog.html">Блог<i class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item"><a href="contact.html">Контакты<i class="fa fa-angle-down"></i></a></li>
 							</ul>
 							
 							<div class="menu_contact">
-								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/phone_white.png" alt=""></div>{{data.tel}}</div>
-								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/mail_white.png" alt=""></div><a href=`mailto:${data.email}`>{{data.email}}</a></div>
+								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/phone_menu.png" alt=""></div><a href=`tel:+${data.tel}`>+{{data.tel}}</a></div>
+								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/whatsapp_menu.png" alt=""></div><a href=`https://wa.me/${data.whatsapp}`>+{{data.whatsapp}}</a></div>
 							</div>
 						</div>
 					</div>
@@ -424,19 +419,25 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 	  },
 	  methods:{
 	    sendOrder() {
-		      let message = '';
-			  if (!this.phone.startsWith('+')) {
-				this.phone = `+${this.phone}`;
-			  }
-			  for(let item of this.cart){
-			    message = `${message}${item.title}(${item.qt});\n`;
-			  }
-			  
-			  this.message = `*Заказ:* ${message}.\n *Сумма:* ${this.totalAmount} руб.`;
+		      let latitude = '';
+			  let longitude = '';
+		      navigator.geolocation.getCurrentPosition(position => {
+				latitude = position.coords.latitude
+				longitude = position.coords.longitude
+				let message = '';
+				  if (!this.phone.startsWith('+')) {
+					this.phone = `+${this.phone}`;
+				  }
+				  for(let item of this.cart){
+					message = `${message}${item.title}(${item.qt});\n`;
+				  }
+				  
+				  this.message = `*Заказ:* ${message}\n*Сумма:* ${this.totalAmount} руб.\n*Адрес:* https://maps.google.com/?q=${latitude},${longitude}`;
 
-			  const url = `https://wa.me/${this.phone}?text=${encodeURIComponent(this.message)}`;
+				  const url = `https://wa.me/${this.phone}?text=${encodeURIComponent(this.message)}`;
 
-			  location.href = url;
+				  location.href = url;
+			  });
 		},
 	    onSearch(){
 			if(this.search){
