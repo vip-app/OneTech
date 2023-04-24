@@ -27,8 +27,8 @@
 			<div class="container">
 				<div class="row">
 					<div class="col d-flex flex-row">
-						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/phone.png" alt=""></div><a href=`tel:+${data.tel}`>+{{data.tel}}</a></div>
-						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/whatsapp.png" alt=""></div><a href=`https://wa.me/${data.whatsapp}`>+{{data.whatsapp}}</a></div>
+						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/phone.png" alt=""></div><a @click="openTel()">+{{data.tel}}</a></div>
+						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/whatsapp.png" alt=""></div><a @click="openWhatsApp">+{{data.whatsapp}}</a></div>
 					</div>
 				</div>
 			</div>		
@@ -181,8 +181,8 @@
 							</ul>
 							
 							<div class="menu_contact">
-								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/phone_menu.png" alt=""></div><a href=`tel:+${data.tel}`>+{{data.tel}}</a></div>
-								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/whatsapp_menu.png" alt=""></div><a href=`https://wa.me/${data.whatsapp}`>+{{data.whatsapp}}</a></div>
+								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/phone_menu.png" alt=""></div><a @click="openTel()">+{{data.tel}}</a></div>
+								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/whatsapp_menu.png" alt=""></div><a @click="openWhatsApp">+{{data.whatsapp}}</a></div>
 							</div>
 						</div>
 					</div>
@@ -328,6 +328,7 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 			categories: [],
 			cart: [],
 			wishlist: [],
+			email: '',
 			copyright: '',
 		}
 	  },
@@ -354,12 +355,18 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 		}
 	  },
 	  methods:{
+	    openTel(){
+			window.open(`tel:+${this.data.tel}`);
+		},
+		openWhatsApp(){
+			window.open(`https://wa.me/${this.data.whatsapp}`);
+		},
 	    sendEmail() {
 		  const email = this.data.email;
 		  const subject = 'Я согласен на подписку!';
 		  const body = this.email;
 
-		  window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+		  window.open(`mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
 		},
 	    onSearch(){
 			if(this.search){
