@@ -135,8 +135,7 @@
 									<li><a href="index.html">Главная<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="shop.html">Магазин<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="cart.html">Корзина<i class="fas fa-chevron-down"></i></a></li>
-									<li><a href="regular.html">Доставка и оплата<i class="fas fa-chevron-down"></i></a></li>
-									<li><a href="blog.html">Блог<i class="fas fa-chevron-down"></i></a></li>
+									<li><a href="regular.html">Доставка и оплата<i class="fas fa-chevron-down"></i></a></li>								
 									<li><a href="contact.html">Контакты<i class="fas fa-chevron-down"></i></a></li>
 								</ul>
 							</div>
@@ -177,8 +176,7 @@
 								<li class="page_menu_item"><a href="index.html">Главная<i class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item"><a href="shop.html">Магазин<i class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item"><a href="cart.html">Корзина<i class="fa fa-angle-down"></i></a></li>
-								<li class="page_menu_item"><a href="regular.html">Доставка и оплата<i class="fa fa-angle-down"></i></a></li>
-								<li class="page_menu_item"><a href="blog.html">Блог<i class="fa fa-angle-down"></i></a></li>
+								<li class="page_menu_item"><a href="regular.html">Доставка и оплата<i class="fa fa-angle-down"></i></a></li>							
 								<li class="page_menu_item"><a href="contact.html">Контакты<i class="fa fa-angle-down"></i></a></li>
 							</ul>
 							
@@ -227,14 +225,13 @@
 						<div class="newsletter_title_container">
 							<div class="newsletter_icon"><img src="images/send.png" alt=""></div>
 							<div class="newsletter_title">Подписаться на рассылку</div>
-							<div class="newsletter_text"><p>... и получите купон на 20% на первую покупку.</p></div>
+							<div class="newsletter_text"><p>... и получайте уведомления о новых акциях.</p></div>
 						</div>
 						<div class="newsletter_content clearfix">
-							<form action="#" class="newsletter_form">
-								<input type="email" class="newsletter_input" required="required" placeholder="Введите ваш адрес электронной почты">
-								<button class="newsletter_button">Подписаться</button>
+							<form class="newsletter_form">
+								<input v-model="email" type="email" class="newsletter_input" required="required" placeholder="Введите ваш адрес электронной почты">
+								<button @click="sendEmail()" class="newsletter_button">Подписаться</button>
 							</form>
-							<div class="newsletter_unsubscribe_link"><a href="#">отказаться от подписки</a></div>
 						</div>
 					</div>
 				</div>
@@ -243,7 +240,7 @@
 	</div>
 
 	<!-- Footer -->
-
+	
 	<footer class="footer">
 		<div class="container">
 			<div class="row">
@@ -251,13 +248,13 @@
 				<div class="col-lg-3 footer_col">
 					<div class="footer_column footer_contact">
 						<div class="logo_container">
-							<div class="logo"><a href="#">OneTech</a></div>
+							<div class="logo"><a href="#">{{data.title}}</a></div>
 						</div>
 						<div class="footer_title">Есть вопрос? Звоните нам 24/7</div>
-						<div class="footer_phone">+38 068 005 3570</div>
+						<div class="footer_phone">+{{data.tel}}</div>
 						<div class="footer_contact_text">
-							<p>17 Princess Road, London</p>
-							<p>Grester London NW18JR, UK</p>
+							<p>{{data.address.street}}, {{data.address.city}}</p>
+							<p>{{data.address.region}}, {{data.address.country}}</p>
 						</div>
 						<div class="footer_social">
 							<ul>
@@ -271,36 +268,7 @@
 					</div>
 				</div>
 
-				<div class="col-lg-2 offset-lg-2">
-					<div class="footer_column">
-						<div class="footer_title">Найди это быстро</div>
-						<ul class="footer_list">
-							<li><a href="#">Компьютеры и ноутбуки</a></li>
-							<li><a href="#">Безопасность и защита</a></li>
-							<li><a href="#">Комплектующие</a></li>
-							<li><a href="#">Смартфоны и планшеты</a></li>
-							<li><a href="#">ТВ и аудио</a></li>
-						</ul>
-						<div class="footer_subtitle">Гаджеты</div>
-						<ul class="footer_list">
-							<li><a href="#">Авто электроника</a></li>
-						</ul>
-					</div>
-				</div>
-
-				<div class="col-lg-2">
-					<div class="footer_column">
-						<ul class="footer_list footer_list_2">
-							<li><a href="#">Видеоигры и консоли</a></li>
-							<li><a href="#">Аксессуары</a></li>
-							<li><a href="#">Безопасность и защита</a></li>
-							<li><a href="#">Комплектующие</a></li>
-							<li><a href="#">Компьютеры и ноутбуки</a></li>
-						</ul>
-					</div>
-				</div>
-
-				<div class="col-lg-2">
+				<div class="col-lg-2 offset-lg-3">
 					<div class="footer_column">
 						<div class="footer_title">Обслуживание клиентов</div>
 						<ul class="footer_list">
@@ -314,11 +282,11 @@
 						</ul>
 					</div>
 				</div>
-
+			
 			</div>
 		</div>
 	</footer>
-
+	
 	<!-- Copyright -->
 
 	<div class="copyright">
@@ -386,6 +354,13 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 		}
 	  },
 	  methods:{
+	    sendEmail() {
+		  const email = this.data.email;
+		  const subject = 'Я согласен на подписку!';
+		  const body = this.email;
+
+		  window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+		},
 	    onSearch(){
 			if(this.search){
 				let search = [];
@@ -402,13 +377,13 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 				}
 				sessionStorage.setItem("shop-search", JSON.stringify(search));
 				this.search = '';
-				location.href = "shop.html";
+				window.location.href = "shop.html";
 			}
 		},
 		onSubcategory(category, subcategory){
 		    let data = {category:category, subcategory:subcategory};
 		    sessionStorage.setItem("shop-data", JSON.stringify(data));
-			location.href = "shop.html";
+			window.location.href = "shop.html";
 		},
 		getCategories(products){
 			let categories = [];

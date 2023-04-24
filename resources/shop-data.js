@@ -5,5 +5,11 @@ const data = {
 		telegram: "",
 		image: "",
 		email: "seemenu.ru@gmail.com",
-		address: "43.6692488751,45.1036912278"
+		location: "43.6692488751,45.1036912278",
+		address: {
+			street: "Энтузиастов 17",
+			city: "Грозный",
+			region: "Надтеречный район",
+			country: "Чечня"
+		}
 	};

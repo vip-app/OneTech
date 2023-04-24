@@ -236,7 +236,7 @@ section
 .button
 {
 	display: inline-block;
-	background: #0e8ce4;
+	background: #ff0000;
 	border-radius: 5px;
 	height: 48px;
 	-webkit-transition: all 200ms ease;
@@ -386,7 +386,7 @@ section
 }
 .standard_dropdown li a:hover
 {
-	color: #0e8ce4;
+	color: #ff0000;
 }
 .standard_dropdown li a i
 {
@@ -526,7 +526,7 @@ section
 {
 	font-size: 36px;
 	font-weight: 500;
-	color: #0e8ce4;
+	color: #ff0000;
 }
 .header_search
 {
@@ -698,7 +698,7 @@ section
 }
 .custom_list li a:hover
 {
-	color: #0e8ce4;
+	color: #ff0000;
 }
 select
 {
@@ -733,7 +733,7 @@ select option
 	right: 0;
 	width: 50px;
 	height: 100%;
-	background: #0e8ce4;
+	background: #ff0000;
 	border: none;
 	outline: none;
 	cursor: pointer;
@@ -769,7 +769,7 @@ select option
 }
 .wishlist_text a:hover
 {
-	color: #0e8ce4;
+	color: #ff0000;
 }
 .wishlist_count
 {
@@ -784,7 +784,7 @@ select option
 	right: -14px;
 	width: 23px;
 	height: 23px;
-	background: #0e8ce4;
+	background: #ff0000;
 	border-radius: 50%;
 	text-align: center;
 }
@@ -821,7 +821,7 @@ select option
 }
 .cart_text a:hover
 {
-	color: #0e8ce4;
+	color: #ff0000;
 }
 .cart_price
 {
@@ -861,7 +861,7 @@ select option
 {
 	width: 293px;
 	height: 100%;
-	background: #0e8ce4;
+	background: #ff0000;
 	padding-left: 35px;
 	cursor: pointer;
 	z-index: 1;
@@ -957,7 +957,7 @@ select option
 }
 .cat_menu li a:hover
 {
-	color: #0e8ce4;
+	color: #ff0000;
 }
 .cat_menu li a i
 {
@@ -1054,7 +1054,7 @@ select option
 .page_menu_content
 {
 	height: 0px;
-	background: #0e8ce4;
+	background: #ff0000;
 	padding-left: 15px;
 	padding-right: 15px;
 	overflow: hidden;
@@ -1427,7 +1427,7 @@ select option
 	left: 0;
 	height: 100%;
 	border-radius: 5px;
-	background: #0e8ce4;
+	background: #ff0000;
 }
 .deals_timer
 {
@@ -1601,7 +1601,7 @@ select option
 	left: 0;
 	width: 80px;
 	height: 2px;
-	background: #0e8ce4;
+	background: #ff0000;
 	-webkit-transition: all 200ms ease;
 	-moz-transition: all 200ms ease;
 	-ms-transition: all 200ms ease;
@@ -1718,7 +1718,7 @@ select option
 }
 .product_name div a:hover
 {
-	color: #0e8ce4;
+	color: #ff0000;
 }
 .product_color
 {
@@ -1793,7 +1793,7 @@ select option
 	opacity: 0;
 	width: 100%;
 	height: 48px;
-	background: #0e8ce4;
+	background: #ff0000;
 	border: none;
 	outline: none;
 	font-size: 18px;
@@ -1850,11 +1850,11 @@ select option
 }
 .featured_slider .slick-dots li:hover
 {
-	background: #0e8ce4;
+	background: #ff0000;
 }
 .featured_slider .slick-dots li.slick-active
 {
-	background: #0e8ce4;
+	background: #ff0000;
 }
 .featured_slider .slick-dots li:last-child
 {
@@ -2048,7 +2048,7 @@ select option
 	font-size: 10px;
 	text-transform: uppercase;
 	letter-spacing: 0.1em;
-	color: #0e8ce4;
+	color: #ff0000;
 }
 .popular_category
 {
@@ -2197,7 +2197,7 @@ select option
 }
 .banner_2_dots .owl-dot.active
 {
-	background: #0e8ce4;
+	background: #ff0000;
 	box-shadow: none;
 }
 
@@ -2296,11 +2296,11 @@ select option
 }
 .arrivals_slider .slick-dots li:hover
 {
-	background: #0e8ce4;
+	background: #ff0000;
 }
 .arrivals_slider .slick-dots li.slick-active
 {
-	background: #0e8ce4;
+	background: #ff0000;
 }
 .arrivals_slider .slick-dots li:last-child
 {
@@ -2354,7 +2354,7 @@ select option
 	left: 0px;
 	width: 100%;
 	height: 48px;
-	background: #0e8ce4;
+	background: #ff0000;
 	border: none;
 	outline: none;
 	font-size: 18px;
@@ -2389,7 +2389,7 @@ select option
 }
 .arrivals_single_category a:hover
 {
-	color: #0e8ce4;
+	color: #ff0000;
 }
 .arrivals_single_name_container
 {
@@ -2412,7 +2412,7 @@ select option
 }
 .arrivals_single_name a:hover
 {
-	color: #0e8ce4;
+	color: #ff0000;
 }
 .arrivals_single_price
 {
@@ -2450,7 +2450,7 @@ select option
 .arrivals_single_marks .product_new
 {
 	display: block;
-	background: #0e8ce4;
+	background: #ff0000;
 	visibility: visible;
 	opacity: 1;
 }
@@ -2579,7 +2579,7 @@ select option
 }
 .bestsellers_category a:hover
 {
-	color: #0e8ce4;
+	color: #ff0000;
 }
 .bestsellers_name
 {
@@ -2602,7 +2602,7 @@ select option
 }
 .bestsellers_name a:hover
 {
-	color: #0e8ce4;
+	color: #ff0000;
 }
 .bestsellers_rating
 {
@@ -2723,11 +2723,11 @@ select option
 }
 .bestsellers_slider .slick-dots li:hover
 {
-	background: #0e8ce4;
+	background: #ff0000;
 }
 .bestsellers_slider .slick-dots li.slick-active
 {
-	background: #0e8ce4;
+	background: #ff0000;
 }
 .bestsellers_slider .slick-dots li:last-child
 {
@@ -2773,13 +2773,13 @@ select option
 }
 .advert_title a:hover
 {
-	color: #0e8ce4;
+	color: #ff0000;
 }
 .advert_title_2 a
 {
 	font-size: 14px;
 	font-weight: 500;
-	color: #0e8ce4;
+	color: #ff0000;
 	overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -2916,7 +2916,7 @@ select option
 }
 .trends_category a:hover
 {
-	color: #0e8ce4;
+	color: #ff0000;
 }
 .trends_content
 {
@@ -2936,7 +2936,7 @@ select option
 }
 .trends_name a:hover
 {
-	color: #0e8ce4;
+	color: #ff0000;
 }
 .trends_price
 {
@@ -3066,7 +3066,7 @@ select option
 .reviews_all a
 {
 	font-size: 10px;
-	color: #0e8ce4;
+	color: #ff0000;
 	text-transform: uppercase;
 	letter-spacing: 0.1em;
 }
@@ -3165,7 +3165,7 @@ select option
 }
 .reviews_dots .owl-dot.active
 {
-	background: #0e8ce4;
+	background: #ff0000;
 	box-shadow: none;
 }
 
@@ -3294,7 +3294,7 @@ select option
 }
 .viewed_name a:hover
 {
-	color: #0e8ce4;
+	color: #ff0000;
 }
 .item_marks
 {
@@ -3461,7 +3461,7 @@ select option
 	padding-left: 25px;
 	font-size: 16px;
 	outline: none;
-	color: #0e8ce4;
+	color: #ff0000;
 }
 .newsletter_input:focus
 {
@@ -3500,7 +3500,7 @@ select option
 	right: 0;
 	width: 153px;
 	height: 50px;
-	background: #0e8ce4;
+	background: #ff0000;
 	color: #FFFFFF;
 	line-height: 50px;
 	font-size: 18px;
@@ -3523,7 +3523,7 @@ select option
 .newsletter_unsubscribe_link a
 {
 	font-size: 10px;
-	color: #0e8ce4;
+	color: #ff0000;
 	font-weight: 500;
 	text-transform: uppercase;
 	letter-spacing: 0.1em;
@@ -3572,7 +3572,7 @@ select option
 {
 	font-size: 18px;
 	font-weight: 500;
-	color: #0e8ce4;
+	color: #ff0000;
 	margin-top: 13px;
 }
 .footer_contact_text
@@ -3611,7 +3611,7 @@ select option
 }
 .footer_social ul li:hover i
 {
-	color: #0e8ce4;
+	color: #ff0000;
 }
 .footer_subtitle
 {
@@ -3643,7 +3643,7 @@ select option
 }
 .footer_list li a:hover
 {
-	color: #0e8ce4;
+	color: #ff0000;
 }
 .footer_list_2
 {
