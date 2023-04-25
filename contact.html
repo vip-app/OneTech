@@ -27,8 +27,8 @@
 			<div class="container">
 				<div class="row">
 					<div class="col d-flex flex-row">
-						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/phone.png" alt=""></div><a @click="openTel()">+{{data.tel}}</a></div>
-						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/whatsapp.png" alt=""></div><a @click="openWhatsApp">+{{data.whatsapp}}</a></div>
+						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/phone.svg" alt=""></div><a @click="openTel()">+{{data.tel}}</a></div>
+						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/whatsapp.svg" alt=""></div><a @click="openWhatsApp">+{{data.whatsapp}}</a></div>
 					</div>
 				</div>
 			</div>		
@@ -135,7 +135,6 @@
 									<li><a href="index.html">Главная<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="shop.html">Магазин<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="cart.html">Корзина<i class="fas fa-chevron-down"></i></a></li>
-									<li><a href="regular.html">Доставка и оплата<i class="fas fa-chevron-down"></i></a></li>									
 									<li><a href="contact.html">Контакты<i class="fas fa-chevron-down"></i></a></li>
 								</ul>
 							</div>
@@ -176,13 +175,12 @@
 								<li class="page_menu_item"><a href="index.html">Главная<i class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item"><a href="shop.html">Магазин<i class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item"><a href="cart.html">Корзина<i class="fa fa-angle-down"></i></a></li>
-								<li class="page_menu_item"><a href="regular.html">Доставка и оплата<i class="fa fa-angle-down"></i></a></li>								
 								<li class="page_menu_item"><a href="contact.html">Контакты<i class="fa fa-angle-down"></i></a></li>
 							</ul>
 							
 							<div class="menu_contact">
-								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/phone_menu.png" alt=""></div><a @click="openTel()">+{{data.tel}}</a></div>
-								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/whatsapp_menu.png" alt=""></div><a @click="openWhatsApp">+{{data.whatsapp}}</a></div>
+								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/phone_menu.svg" alt=""></div><a @click="openTel()">+{{data.tel}}</a></div>
+								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/whatsapp_menu.svg" alt=""></div><a @click="openWhatsApp">+{{data.whatsapp}}</a></div>
 							</div>
 						</div>
 					</div>
@@ -202,7 +200,7 @@
 
 						<!-- Контакты Item -->
 						<div @click="openTel()" class="contact_info_item d-flex flex-row align-items-center justify-content-start">
-							<div class="contact_info_image"><img src="images/contact_1.png" alt=""></div>
+							<div class="contact_info_image"><img src="images/contact_1.svg" alt=""></div>
 							<div class="contact_info_content">
 								<div class="contact_info_title">Телефон</div>
 								<div class="contact_info_text">+{{data.tel}}</div>
@@ -211,7 +209,7 @@
 
 						<!-- Контакты Item -->
 						<div @click="openWhatsApp()" class="contact_info_item d-flex flex-row align-items-center justify-content-start">
-							<div class="contact_info_image"><img src="images/whatsapp_2.png" alt=""></div>
+							<div class="contact_info_image"><img src="images/whatsapp_2.svg" alt=""></div>
 							<div class="contact_info_content">
 								<div class="contact_info_title">WhatsApp</div>
 								<div class="contact_info_text">+{{data.whatsapp}}</div>
@@ -242,17 +240,17 @@
 					<div class="contact_form_container">
 						<div class="contact_form_title">Свяжитесь с нами</div>
 
-						<form action="#" id="contact_form">
+						<form id="contact_form">
 							<div class="contact_form_inputs d-flex flex-md-row flex-column justify-content-between align-items-between">
-								<input type="text" id="contact_form_name" class="contact_form_name input_field" placeholder="Your name" required="required" data-error="Name is required.">
-								<input type="text" id="contact_form_email" class="contact_form_email input_field" placeholder="Your email" required="required" data-error="Email is required.">
-								<input type="text" id="contact_form_phone" class="contact_form_phone input_field" placeholder="Your phone number">
+								<input v-model="name" type="text" id="contact_form_name" class="contact_form_name input_field" placeholder="Ваше имя" required="required" data-error="Name is required.">
+								<input v-model="email" type="text" id="contact_form_email" class="contact_form_email input_field" placeholder="Ваш адрес электронной почты" required="required" data-error="Email is required.">
+								<input v-model="phone" type="text" id="contact_form_phone" class="contact_form_phone input_field" placeholder="Ваш номер телефона">
 							</div>
 							<div class="contact_form_text">
-								<textarea id="contact_form_message" class="text_field contact_form_message" name="message" rows="4" placeholder="Message" required="required" data-error="Please, write us a message."></textarea>
+								<textarea v-model="message" id="contact_form_message" class="text_field contact_form_message" name="message" rows="4" placeholder="Сообщение" required="required" data-error="Please, write us a message."></textarea>
 							</div>
 							<div class="contact_form_button">
-								<button type="submit" class="button contact_submit_button">Отправить сообщение</button>
+								<button @click="sendMessage()" type="button" class="button contact_submit_button">Отправить сообщение</button>
 							</div>
 						</form>
 
@@ -287,7 +285,7 @@
 						</div>
 						<div class="newsletter_content clearfix">
 							<form class="newsletter_form">
-								<input v-model="email" type="email" class="newsletter_input" required="required" placeholder="Введите ваш адрес электронной почты">
+								<input type="email" class="newsletter_input" required="required" placeholder="Введите ваш адрес электронной почты">
 								<button @click="sendEmail()" class="newsletter_button">Подписаться</button>
 							</form>
 						</div>
@@ -386,7 +384,10 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 			categories: [],
 			cart: [],
 			wishlist: [],
+			name: '',
 			email: '',
+			phone: '',
+			message: '',
 			copyright: '',
 		}
 	  },
@@ -415,8 +416,15 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 	  methods:{
 	    sendEmail() {
 		  const email = this.data.email;
-		  const subject = 'Я согласен на подписку!';
-		  const body = this.email;
+		  const subject = 'Подписка';
+		  const body = 'Я согласен на подписку!';
+
+		  window.open(`mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+		},
+		sendMessage() {
+		  const email = this.data.email;
+		  const subject = this.phone;
+		  const body = `<b>${this.name}<b>\n<br><i>${this.message}<i>`;
 
 		  window.open(`mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
 		},

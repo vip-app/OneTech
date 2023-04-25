@@ -30,8 +30,8 @@
 			<div class="container">
 				<div class="row">
 					<div class="col d-flex flex-row">
-						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/phone.png" alt=""></div><a @click="openTel()">+{{data.tel}}</a></div>
-						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/whatsapp.png" alt=""></div><a @click="openWhatsApp">+{{data.whatsapp}}</a></div>
+						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/phone.svg" alt=""></div><a @click="openTel()">+{{data.tel}}</a></div>
+						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="images/whatsapp.svg" alt=""></div><a @click="openWhatsApp">+{{data.whatsapp}}</a></div>
 					</div>
 				</div>
 			</div>		
@@ -137,8 +137,7 @@
 								<ul class="standard_dropdown main_nav_dropdown">
 									<li><a href="index.html">Главная<i class="fas fa-chevron-down"></i></a></li>
 									<li><a href="shop.html">Магазин<i class="fas fa-chevron-down"></i></a></li>
-									<li><a href="cart.html">Корзина<i class="fas fa-chevron-down"></i></a></li>
-									<li><a href="regular.html">Доставка и оплата<i class="fas fa-chevron-down"></i></a></li>									
+									<li><a href="cart.html">Корзина<i class="fas fa-chevron-down"></i></a></li>												
 									<li><a href="contact.html">Контакты<i class="fas fa-chevron-down"></i></a></li>
 								</ul>
 							</div>
@@ -179,13 +178,12 @@
 								<li class="page_menu_item"><a href="index.html">Главная<i class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item"><a href="shop.html">Магазин<i class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item"><a href="cart.html">Корзина<i class="fa fa-angle-down"></i></a></li>
-								<li class="page_menu_item"><a href="regular.html">Доставка и оплата<i class="fa fa-angle-down"></i></a></li>								
 								<li class="page_menu_item"><a href="contact.html">Контакты<i class="fa fa-angle-down"></i></a></li>
 							</ul>
 							
 							<div class="menu_contact">
-								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/phone_menu.png" alt=""></div><a @click="openTel()">+{{data.tel}}</a></div>
-								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/whatsapp_menu.png" alt=""></div><a @click="openWhatsApp">+{{data.whatsapp}}</a></div>
+								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/phone_menu.svg" alt=""></div><a @click="openTel()">+{{data.tel}}</a></div>
+								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="images/whatsapp_menu.svg" alt=""></div><a @click="openWhatsApp">+{{data.whatsapp}}</a></div>
 							</div>
 						</div>
 					</div>
@@ -335,7 +333,7 @@
 						</div>
 						<div class="newsletter_content clearfix">
 							<form class="newsletter_form">
-								<input v-model="email" type="email" class="newsletter_input" required="required" placeholder="Введите ваш адрес электронной почты">
+								<input type="email" class="newsletter_input" required="required" placeholder="Введите ваш адрес электронной почты">
 								<button @click="sendEmail()" class="newsletter_button">Подписаться</button>
 							</form>
 							
@@ -436,7 +434,6 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 			cart: [],
 			wishlist: [],
 			qt: 1,
-			email: '',
 			copyright: '',
 		}
 	  },
@@ -472,8 +469,8 @@ Copyright &copy; {{copyright}} All rights reserved | This template is made with 
 		},
 	    sendEmail() {
 		  const email = this.data.email;
-		  const subject = 'Я согласен на подписку!';
-		  const body = this.email;
+		  const subject = 'Подписка';
+		  const body = 'Я согласен на подписку!';
 
 		  window.open(`mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
 		},
