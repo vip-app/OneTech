@@ -1995,8 +1995,8 @@ select option
 
 .popular_categories
 {
-	padding-top: 10px;
-	padding-bottom: 90px;
+	padding-top: 50px;
+	padding-bottom: 50px;
 }
 .popular_categories_title
 {
@@ -2208,8 +2208,8 @@ select option
 .new_arrivals
 {
 	width: 100%;
-	padding-top: 40px;
-	padding-bottom: 10px;
+	padding-top: 50px;
+	padding-bottom: 0px;
 }
 .new_arrivals_title
 {
@@ -2231,7 +2231,7 @@ select option
 }
 .arrivals_slider .slick-track
 {
-	padding-bottom: 60px;
+	padding-bottom: 70px;
 }
 .arrivals_slider_item
 {
@@ -2514,10 +2514,9 @@ select option
 
 .best_sellers
 {
-	padding-top: 56px;
+	padding-top: 50px;
 	background: #eff6fa;
 	padding-bottom: 50px;
-	margin-top: -77px;
 }
 .bestsellers_panel
 {
@@ -2556,16 +2555,19 @@ select option
 }
 .bestsellers_image
 {
-	width: 115px;
 	height: 115px;
 }
 .bestsellers_image img
 {
-	max-width: 100px;
+	max-width: 115px;
 }
 .bestsellers_content
 {
 	padding-left: 15px;
+	width:90%;
+	white-space: nowrap; /* Запрещаем перенос строк */
+    overflow: hidden; /* Обрезаем все, что не помещается в область */
+    text-overflow: ellipsis; /* Добавляем многоточие */
 }
 .bestsellers_category a
 {
@@ -2584,10 +2586,7 @@ select option
 .bestsellers_name
 {
 	margin-top: 2px;
-	width:70%;
-	white-space: nowrap; /* Запрещаем перенос строк */
-    overflow: hidden; /* Обрезаем все, что не помещается в область */
-    text-overflow: ellipsis; /* Добавляем многоточие */
+	
 }
 .bestsellers_name a
 {
@@ -2745,8 +2744,8 @@ select option
 .adverts
 {
 	width: 100%;
-	padding-top: 80px;
-	padding-bottom: 80px;
+	padding-top: 50px;
+	padding-bottom: 50px;
 }
 .advert
 {
@@ -2814,8 +2813,8 @@ select option
 
 .trends
 {
-	padding-top: 80px;
-	padding-bottom: 80px;
+	padding-top: 50px;
+	padding-bottom: 50px;
 }
 .trends_overlay
 {
@@ -3100,6 +3099,7 @@ select option
 {
 	font-size: 16px;
 	font-weight: 500;
+	width: 90%;
 	white-space: nowrap; /* Запрещаем перенос строк */
     overflow: hidden; /* Обрезаем все, что не помещается в область */
     text-overflow: ellipsis; /* Добавляем многоточие */
@@ -3175,8 +3175,8 @@ select option
 
 .viewed
 {
-	padding-top: 51px;
-	padding-bottom: 60px;
+	padding-top: 50px;
+	padding-bottom: 50px;
 	background: #eff6fa;
 }
 .viewed_title_container
@@ -3233,7 +3233,6 @@ select option
 }
 .viewed_image
 {
-	width: 115px;
 	height: 115px;
 }
 .viewed_image img
@@ -3339,8 +3338,8 @@ select option
 .brands
 {
 	width: 100%;
-	padding-top: 90px;
-	padding-bottom: 90px;
+	padding-top: 50px;
+	padding-bottom: 50px;
 }
 .brands_slider_container
 {

@@ -1260,7 +1260,7 @@ select option
 {
 	background: #FFFFFF;
 	padding-top: 80px;
-	padding-bottom: 139px;
+	padding-bottom: 80px;
 }
 .shop_content
 {
@@ -1782,8 +1782,8 @@ select option
 
 .viewed
 {
-	padding-top: 51px;
-	padding-bottom: 60px;
+	padding-top: 50px;
+	padding-bottom: 50px;
 	background: #eff6fa;
 }
 .viewed_title_container
@@ -1840,7 +1840,6 @@ select option
 }
 .viewed_image
 {
-	width: 115px;
 	height: 115px;
 }
 .viewed_image img
@@ -1946,8 +1945,8 @@ select option
 .brands
 {
 	width: 100%;
-	padding-top: 90px;
-	padding-bottom: 90px;
+	padding-top: 50px;
+	padding-bottom: 50px;
 }
 .brands_slider_container
 {
